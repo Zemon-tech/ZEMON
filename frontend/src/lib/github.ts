@@ -42,7 +42,7 @@ interface GitHubResponse {
   pullRequests: Array<{
     title: string;
     author: string;
-    status: string;
+    status: "open" | "merged" | "closed";
     createdAt: string;
     number: number;
     url: string;
@@ -141,7 +141,7 @@ export async function getRepoDetails(owner: string, repo: string): Promise<GitHu
       pullRequests: pullRequests.map((pr: any) => ({
         title: pr.title,
         author: pr.user.login,
-        status: pr.merged_at ? "merged" : pr.state,
+        status: pr.merged_at ? "merged" : (pr.state === "open" ? "open" : "closed") as "open" | "merged" | "closed",
         createdAt: pr.created_at,
         number: pr.number,
         url: pr.html_url,

@@ -38,9 +38,9 @@ export default function OverviewTab({ readme, languages, branches, lastCommits, 
       remarkPlugins={[remarkGfm]}
       rehypePlugins={[rehypeRaw]}
       components={{
-        code({node, inline, className, children, ...props}) {
+        code({ className, children }) {
           const match = /language-(\w+)/.exec(className || '');
-          return !inline && match ? (
+          return match ? (
             <div className="rounded-md overflow-hidden my-4">
               <div className="bg-muted/50 px-4 py-2 text-xs text-muted-foreground border-b">
                 {match[1].toUpperCase()}
@@ -53,148 +53,150 @@ export default function OverviewTab({ readme, languages, branches, lastCommits, 
                   margin: 0,
                   borderRadius: '0 0 6px 6px',
                 }}
-                {...props}
               >
                 {String(children).replace(/\n$/, '')}
               </SyntaxHighlighter>
             </div>
           ) : (
-            <code className="bg-muted px-1.5 py-0.5 rounded text-sm" {...props}>
+            <code className="bg-muted px-1.5 py-0.5 rounded text-sm">
               {children}
             </code>
           );
         },
-        h1: ({node, ...props}) => (
-          <h1 
-            className="text-2xl font-bold mt-8 mb-4 pb-2 border-b" 
-            {...props} 
-          />
-        ),
-        h2: ({node, ...props}) => (
-          <h2 
-            className="text-xl font-semibold mt-6 mb-4 pb-2 border-b" 
-            {...props} 
-          />
-        ),
-        h3: ({node, ...props}) => (
-          <h3 
-            className="text-lg font-semibold mt-5 mb-3" 
-            {...props} 
-          />
-        ),
-        p: ({node, ...props}) => (
-          <p 
-            className="leading-7 [&:not(:first-child)]:mt-4" 
-            {...props} 
-          />
-        ),
-        ul: ({node, children, ...props}) => {
+        div({ className, children, style }) {
+          const textAlign = style?.textAlign;
+          return (
+            <div 
+              className={`${className || ''} ${
+                textAlign === 'center' ? 'text-center flex flex-col items-center' : ''
+              }`}
+              style={style}
+            >
+              {children}
+            </div>
+          );
+        },
+        img({ src, alt }) {
+          return (
+            <img
+              src={getImagePath(src || '')}
+              alt={alt || ''}
+              className="max-w-full h-auto rounded-lg my-4"
+            />
+          );
+        },
+        h1({ children }) {
+          return (
+            <h1 className="text-2xl font-bold mt-8 mb-4 pb-2 border-b">
+              {children}
+            </h1>
+          );
+        },
+        h2({ children }) {
+          return (
+            <h2 className="text-xl font-semibold mt-6 mb-4 pb-2 border-b">
+              {children}
+            </h2>
+          );
+        },
+        h3({ children }) {
+          return (
+            <h3 className="text-lg font-semibold mt-5 mb-3">
+              {children}
+            </h3>
+          );
+        },
+        p({ children }) {
+          return (
+            <p className="leading-7 [&:not(:first-child)]:mt-4">
+              {children}
+            </p>
+          );
+        },
+        ul({ children }) {
           const items = React.Children.toArray(children);
           return items.length > 20 ? (
             <div className="max-h-[400px] overflow-auto">
-              <ul className="my-4 ml-6 list-disc [&>li]:mt-2" {...props}>
+              <ul className="my-4 ml-6 list-disc [&>li]:mt-2">
                 {children}
               </ul>
             </div>
           ) : (
-            <ul className="my-4 ml-6 list-disc [&>li]:mt-2" {...props}>
+            <ul className="my-4 ml-6 list-disc [&>li]:mt-2">
               {children}
             </ul>
           );
         },
-        ol: ({node, ...props}) => (
-          <ol 
-            className="my-4 ml-6 list-decimal [&>li]:mt-2" 
-            {...props} 
-          />
-        ),
-        li: ({node, ...props}) => (
-          <li className="leading-7" {...props} />
-        ),
-        a: ({node, children, ...props}) => {
-          const isShield = props.href?.includes('shields.io') || 
-                         props.href?.includes('github-readme-stats') ||
-                         props.href?.includes('github-profile-trophy');
+        ol({ children }) {
+          return (
+            <ol className="my-4 ml-6 list-decimal [&>li]:mt-2">
+              {children}
+            </ol>
+          );
+        },
+        li({ children }) {
+          return (
+            <li className="leading-7">
+              {children}
+            </li>
+          );
+        },
+        a({ href, children }) {
+          const isShield = href?.includes('shields.io') || 
+                          href?.includes('github-readme-stats') ||
+                          href?.includes('github-profile-trophy');
           return (
             <a
+              href={href}
               className={isShield ? 'inline-block mx-1' : 'text-primary hover:underline'}
               target="_blank"
               rel="noopener noreferrer"
-              {...props}
             >
               {children}
             </a>
           );
         },
-        blockquote: ({node, ...props}) => (
-          <blockquote 
-            className="mt-4 border-l-4 border-primary/20 pl-4 italic text-muted-foreground"
-            {...props} 
-          />
-        ),
-        img: ({node, src, ...props}) => {
-          if (!src) return null;
-          
-          const imageSrc = getImagePath(src);
-          const isShield = src.includes('shields.io') || 
-                          src.includes('github-readme-stats') ||
-                          src.includes('github-profile-trophy');
-          
+        blockquote({ children }) {
           return (
-            <span className={isShield ? 'inline-block mx-1' : 'block my-4'}>
-              <img 
-                src={imageSrc}
-                className={`${
-                  isShield ? '' : 'rounded-lg border max-w-full'
-                }`}
-                loading="lazy"
-                onError={(e) => {
-                  console.warn('Image failed to load:', imageSrc);
-                  e.currentTarget.style.display = 'none';
-                }}
-                {...props} 
-              />
-            </span>
+            <blockquote className="mt-4 border-l-4 border-primary/20 pl-4 italic text-muted-foreground">
+              {children}
+            </blockquote>
           );
         },
-        table: ({node, ...props}) => (
-          <div className="my-4 w-full overflow-x-auto">
-            <table className="min-w-full divide-y divide-border whitespace-nowrap" {...props} />
-          </div>
-        ),
-        th: ({node, ...props}) => (
-          <th 
-            className="border bg-muted px-4 py-2 text-left font-semibold" 
-            {...props} 
-          />
-        ),
-        tr: ({node, ...props}) => (
-          <tr className="hover:bg-muted/50 transition-colors" {...props} />
-        ),
-        td: ({node, align, ...props}) => (
-          <td 
-            className={`px-4 py-2 text-sm ${
-              align === 'center' ? 'text-center' : ''
-            }`}
-            {...props} 
-          />
-        ),
-        div: ({node, className, children, ...props}) => {
-          const align = props['align'];
+        table({ children }) {
           return (
-            <div 
-              className={`${className || ''} ${
-                align === 'center' ? 'text-center flex flex-col items-center' : ''
-              }`}
-              {...props}
-            >
-              {children}
+            <div className="my-4 w-full overflow-x-auto">
+              <table className="min-w-full divide-y divide-border whitespace-nowrap">
+                {children}
+              </table>
             </div>
           );
         },
-        hr: ({node, ...props}) => (
-          <hr className="my-8 border-t border-border" {...props} />
-        ),
+        th({ children }) {
+          return (
+            <th className="border bg-muted px-4 py-2 text-left font-semibold">
+              {children}
+            </th>
+          );
+        },
+        tr({ children }) {
+          return (
+            <tr className="hover:bg-muted/50 transition-colors">
+              {children}
+            </tr>
+          );
+        },
+        td({ children, style }) {
+          const textAlign = style?.textAlign;
+          return (
+            <td className={`px-4 py-2 text-sm ${textAlign === 'center' ? 'text-center' : ''}`}>
+              {children}
+            </td>
+          );
+        },
+        hr() {
+          return <hr className="my-8 border-t border-border" />;
+        }
       }}
     >
       {readme || "No README available"}

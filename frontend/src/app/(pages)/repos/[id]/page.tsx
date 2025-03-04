@@ -77,16 +77,29 @@ interface Repository {
 }
 
 interface GithubData {
-  repoData?: {
+  repoData: {
     readme: string;
+    [key: string]: any;
   };
-  languages?: string[];
-  branches?: string[];
+  languages: Array<{
+    name: string;
+    value: number;
+    color: string;
+    bytes: number;
+  }>;
+  branches: Array<{
+    name: string;
+    lastCommit: string;
+    protected: boolean;
+  }>;
   commits: Array<{
     date: string;
-    commits: number;
+    message: string;
+    author: string;
+    sha: string;
+    url: string;
   }>;
-  repoInfo?: {
+  repoInfo: {
     owner: string;
     name: string;
     defaultBranch: string;
@@ -97,12 +110,12 @@ interface GithubData {
     pullRequests: number;
   }>;
   pullRequests: Array<{
-    id: number;
     title: string;
-    number: number;
-    state: string;
+    author: string;
+    status: "open" | "merged" | "closed";
     createdAt: string;
-    updatedAt: string;
+    number: number;
+    url: string;
   }>;
 }
 
