@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { API_BASE_URL } from '@/lib/api';
+import { Loader2 } from "lucide-react";
 
-export default function AuthCallback() {
+function CallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -36,8 +37,8 @@ export default function AuthCallback() {
           avatar: user.user_metadata.avatar_url,
           github_username: user.user_metadata.user_name,
           github: user.user_metadata.user_name,
-          role: 'user', // Add default role
-          _id: user.id, // Add user ID from Supabase
+          role: 'user',
+          _id: user.id,
         };
 
         // Log the data being sent to the backend
@@ -53,49 +54,19 @@ export default function AuthCallback() {
         });
 
         const data = await response.json();
-        console.log('Response from backend:', data);
 
         if (!response.ok) {
-          console.error('MongoDB sync error:', data);
-          throw new Error(data.message || 'Failed to sync with MongoDB');
+          throw new Error(data.message || 'Failed to sync user data');
         }
 
-        // Store token and user data - ensure we're storing the correct structure
-        const userData = {
-          _id: data.data.user._id || data.data.user.id,
-          name: data.data.user.name,
-          email: data.data.user.email,
-          avatar: data.data.user.avatar,
-          github_username: data.data.user.github_username,
-          github: data.data.user.github,
-          role: data.data.user.role || 'user',
-        };
+        // Store the token
+        localStorage.setItem('token', data.token);
 
-        localStorage.setItem('token', data.data.token);
-        localStorage.setItem('user', JSON.stringify(userData));
-
-        // Dispatch auth state change event
-        const event = new CustomEvent('auth-state-change', { 
-          detail: userData 
-        });
-        window.dispatchEvent(event);
-
-        // Check for error in URL params and redirect accordingly
-        const error_description = searchParams.get('error_description');
-        if (error_description) {
-          router.push(`/login?error=${encodeURIComponent(error_description)}`);
-        } else {
-          // Redirect to password setup if this is a new user
-          console.log('Is new user:', data.data.isNewUser);
-          if (data.data.isNewUser) {
-            router.push('/setup-password');
-          } else {
-            router.push('/');
-          }
-        }
+        // Redirect to dashboard
+        router.push('/dashboard');
       } catch (error) {
-        console.error('Auth callback error:', error);
-        router.push(`/login?error=${encodeURIComponent(error instanceof Error ? error.message : 'Authentication failed')}`);
+        console.error('Error in auth callback:', error);
+        router.push('/login?error=auth');
       }
     };
 
@@ -104,7 +75,27 @@ export default function AuthCallback() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="text-center">
+        <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+        <h2 className="text-2xl font-semibold mb-2">Completing Sign In</h2>
+        <p className="text-muted-foreground">Please wait while we set up your account...</p>
+      </div>
     </div>
+  );
+}
+
+export default function AuthCallback() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <h2 className="text-2xl font-semibold mb-2">Loading</h2>
+          <p className="text-muted-foreground">Please wait...</p>
+        </div>
+      </div>
+    }>
+      <CallbackContent />
+    </Suspense>
   );
 } 
