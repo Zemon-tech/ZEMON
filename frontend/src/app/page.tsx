@@ -14,6 +14,8 @@ import Link from "next/link";
 import Footer from "@/components/layout/Footer";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { FlickeringGrid } from "@/components/magicui/flickering-grid";
+import { HyperText } from "@/components/magicui/hyper-text";
 
 interface User {
   _id?: string;
@@ -411,34 +413,68 @@ export default function HomePage() {
       </section>
 
       {/* Featured Projects Section - Clean background */}
-      <section className="py-20 bg-background">
+      <section className="pt-8 pb-4 bg-background">
         <div className="container">
-          <div className="text-center mb-16">
-            <Badge variant="secondary" className="mb-4">Featured Projects</Badge>
+          <div className="text-center mb-6">
+            <Badge variant="secondary" className="mb-3">Featured Projects</Badge>
             <h2 className="text-3xl font-bold">Trending This Week</h2>
             <p className="text-muted-foreground mt-2">
               Discover popular projects from our community
             </p>
           </div>
           <Tabs defaultValue="all" className="w-full">
-            <TabsList className="justify-center mb-8">
+            <TabsList className="justify-center mb-4">
               <TabsTrigger value="all">All</TabsTrigger>
               <TabsTrigger value="web">Web Dev</TabsTrigger>
               <TabsTrigger value="mobile">Mobile</TabsTrigger>
               <TabsTrigger value="ai">AI/ML</TabsTrigger>
             </TabsList>
-            <TabsContent value="all">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Add project cards here */}
-              </div>
+            <TabsContent value="all" className="min-h-[80px] flex items-center justify-center">
+              <HyperText
+                className="text-2xl text-muted-foreground"
+                duration={1000}
+                startOnView={true}
+                animateOnHover={true}
+              >
+                COMING SOON !!
+              </HyperText>
             </TabsContent>
-            {/* Add other tab contents */}
+            <TabsContent value="web" className="min-h-[80px] flex items-center justify-center">
+              <HyperText
+                className="text-2xl text-muted-foreground"
+                duration={1000}
+                startOnView={true}
+                animateOnHover={true}
+              >
+                COMING SOON !!
+              </HyperText>
+            </TabsContent>
+            <TabsContent value="mobile" className="min-h-[80px] flex items-center justify-center">
+              <HyperText
+                className="text-2xl text-muted-foreground"
+                duration={1000}
+                startOnView={true}
+                animateOnHover={true}
+              >
+                COMING SOON !!
+              </HyperText>
+            </TabsContent>
+            <TabsContent value="ai" className="min-h-[80px] flex items-center justify-center">
+              <HyperText
+                className="text-2xl text-muted-foreground"
+                duration={1000}
+                startOnView={true}
+                animateOnHover={true}
+              >
+                COMING SOON !!
+              </HyperText>
+            </TabsContent>
           </Tabs>
         </div>
       </section>
 
       {/* Community Section - Gradient background */}
-      <section className="py-20 bg-gradient-to-b from-background via-muted/20 to-primary/5">
+      <section className="py-12 bg-gradient-to-b from-background via-muted/20 to-primary/5">
         <div className="container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -482,25 +518,28 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section - Final gradient */}
-      <section className="relative py-24 bg-gradient-to-b from-background to-muted">
+      <section className="relative py-16 bg-gradient-to-b from-background to-muted">
+        <div className="absolute inset-0">
+          <FlickeringGrid className="w-full h-full" color="rgb(0, 0, 0)" maxOpacity={0.1} />
+        </div>
         <div className="absolute inset-0 bg-grid-white/5" />
         <div className="container relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-3xl mx-auto text-center space-y-8"
+            className="max-w-3xl mx-auto text-center space-y-6"
           >
-            <Badge variant="secondary" className="mb-4">Limited Access</Badge>
             <h2 className="text-3xl font-bold">Ready to Make an Impact?</h2>
             <p className="text-muted-foreground">
               Join an exclusive platform where top developers collaborate on groundbreaking projects.
             </p>
-            <div className="flex gap-4 justify-center">
-              <Button size="lg" className="gap-2 shadow-lg shadow-primary/20">
-                Apply Now <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button size="lg" variant="outline">
-                View Benefits
+            <div className="flex justify-center">
+              <Button 
+                size="lg" 
+                className="gap-2 shadow-lg shadow-primary/20"
+                onClick={() => router.push('/login')}
+              >
+                Register Now <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
           </motion.div>
