@@ -203,14 +203,19 @@ router.get('/verify', auth, async (req: AuthRequest, res: Response) => {
 // GitHub sync endpoint
 router.post('/github/sync', async (req, res, next) => {
   try {
-    const { name, email, avatar, github } = req.body;
+    const { name, email, avatar, github, github_username, _id } = req.body;
 
     if (!email || !name) {
       throw new AppError('Email and name are required', 400);
     }
 
     // Find or create user
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ 
+      $or: [
+        { email },
+        { _id } // Also try to find by Supabase ID if email doesn't match
+      ]
+    });
     let isNewUser = false;
     
     if (user) {
@@ -218,7 +223,8 @@ router.post('/github/sync', async (req, res, next) => {
       user.name = name;
       user.displayName = user.displayName || name; // Keep existing displayName if set
       user.avatar = avatar || user.avatar;
-      user.github = github;
+      user.github = github_username || github;
+      user.github_username = github_username || github;
       await user.save();
     } else {
       // Create new user with GitHub data
@@ -227,11 +233,13 @@ router.post('/github/sync', async (req, res, next) => {
       const randomPassword = crypto.randomBytes(16).toString('hex'); // 32 characters long
       
       user = await User.create({
+        _id, // Use the Supabase ID if provided
         name,
         displayName: name, // Initially set displayName same as name
         email,
         avatar,
-        github,
+        github: github_username || github,
+        github_username: github_username || github,
         password: randomPassword // This will be hashed by the pre-save middleware
       });
     }
@@ -247,7 +255,7 @@ router.post('/github/sync', async (req, res, next) => {
       { expiresIn: '7d' }
     );
 
-    // Cache user data - Redis operation removed
+    // Prepare user data for response
     const userData = {
       id: user._id,
       name: user.name,
@@ -255,9 +263,9 @@ router.post('/github/sync', async (req, res, next) => {
       email: user.email,
       avatar: user.avatar,
       github: user.github,
+      github_username: user.github_username,
       role: user.role
     };
-    // Redis operation removed
 
     res.json({
       success: true,

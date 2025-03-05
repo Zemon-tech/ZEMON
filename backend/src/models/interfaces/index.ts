@@ -9,6 +9,7 @@ export interface IUser extends Document {
   avatar?: string;
   bio?: string;
   github?: string;
+  github_username?: string;
   twitter?: string;
   linkedin?: string;
   personalWebsite?: string; // Referred to as "Portfolio website" in the UI

@@ -35,6 +35,7 @@ const userSchema = new Schema<IUser>({
   },
   bio: String,
   github: String,
+  github_username: String,
   twitter: String,
   linkedin: String,
   personalWebsite: {
