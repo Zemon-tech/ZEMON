@@ -15,6 +15,7 @@ import CommentsSidePanel from "@/components/community/CommentsSidePanel";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api";
 
 interface Comment {
   _id: string;
@@ -72,7 +73,7 @@ export default function CommunityPage() {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await axios.get('http://localhost:5002/api/community/ideas');
+      const response = await axios.get(`${API_BASE_URL}/api/community/ideas`);
       setIdeas(response.data);
     } catch (error: Error | unknown) {
       console.error('Error fetching ideas:', error);

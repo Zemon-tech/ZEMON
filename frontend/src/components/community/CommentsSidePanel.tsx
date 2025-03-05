@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { API_BASE_URL } from "@/lib/api";
 
 interface Comment {
   _id: string;
@@ -82,7 +83,7 @@ export default function CommentsSidePanel({
     try {
       setIsSubmittingComment(true);
       const response = await axios.post(
-        `http://localhost:5002/api/community/ideas/${ideaId}/comments`,
+        `${API_BASE_URL}/api/community/ideas/${ideaId}/comments`,
         { text: newComment },
         {
           headers: {

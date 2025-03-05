@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
+import { API_BASE_URL } from "@/lib/api";
 
 interface AddIdeaModalProps {
   isOpen: boolean;
@@ -30,7 +31,7 @@ export default function AddIdeaModal({ isOpen, onClose, onIdeaAdded }: AddIdeaMo
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5002/api/community/ideas', {
+      const response = await axios.post(`${API_BASE_URL}/api/community/ideas`, {
         title: formData.title,
         description: formData.description
       }, {

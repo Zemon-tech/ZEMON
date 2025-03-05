@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import axios from "axios";
+import { API_BASE_URL } from "@/lib/api";
 
 interface Resource {
   _id: string;
@@ -51,7 +52,7 @@ export default function ResourceList() {
       setIsLoading(true);
       setError(null);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5002/api/community/resources', {
+      const response = await axios.get(`${API_BASE_URL}/api/community/resources`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -131,7 +132,7 @@ export default function ResourceList() {
         throw new Error('Please log in to delete a resource');
       }
 
-      const response = await axios.delete(`http://localhost:5002/api/community/resources/${resourceToDelete._id}`, {
+      const response = await axios.delete(`${API_BASE_URL}/api/community/resources/${resourceToDelete._id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

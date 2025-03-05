@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
+import { API_BASE_URL } from "@/lib/api";
 
 interface Comment {
   _id: string;
@@ -69,7 +70,7 @@ export default function IdeaCard({ idea, onDelete, onCommentClick }: IdeaCardPro
         throw new Error('Please log in to delete the idea');
       }
 
-      const response = await axios.delete(`http://localhost:5002/api/community/ideas/${idea.id}`, {
+      const response = await axios.delete(`${API_BASE_URL}/api/community/ideas/${idea.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

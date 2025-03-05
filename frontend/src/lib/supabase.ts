@@ -6,10 +6,13 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export const signInWithGitHub = async () => {
+  // Get the current environment's URL
+  const redirectUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+  
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'github',
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`
+      redirectTo: `${redirectUrl}/auth/callback`
     }
   });
 

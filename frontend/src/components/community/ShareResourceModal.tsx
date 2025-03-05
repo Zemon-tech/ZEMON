@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { API_BASE_URL } from "@/lib/api";
 
 interface ShareResourceModalProps {
   isOpen: boolean;
@@ -57,7 +58,7 @@ export default function ShareResourceModal({ isOpen, onClose, onResourceAdded }:
         return;
       }
 
-      const response = await axios.post('http://localhost:5002/api/community/resources', {
+      const response = await axios.post(`${API_BASE_URL}/api/community/resources`, {
         title: formData.title,
         description: formData.description,
         resourceType: formData.resourceType,
