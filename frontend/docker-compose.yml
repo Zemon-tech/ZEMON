@@ -1,12 +1,28 @@
 services:
-  web:
+  frontend:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
-      - MONGODB_URI=mongodb://mongodb:27017/spherex
+      - MONGODB_URI=mongodb+srv://namestekayo:Gyeky8Wu1W4e2FDi@zemon-database.w11mn.mongodb.net/?retryWrites=true&w=majority&appName=zemon-database
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+      - backend
+    networks:
+      - spherex-network
+    restart: always
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URI=mongodb+srv://namestekayo:Gyeky8Wu1W4e2FDi@zemon-database.w11mn.mongodb.net/?retryWrites=true&w=majority&appName=zemon-database
       - NODE_ENV=production
     depends_on:
       - mongodb
