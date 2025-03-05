@@ -59,8 +59,15 @@ function CallbackContent() {
           throw new Error(data.message || 'Failed to sync user data');
         }
 
-        // Store the token
-        localStorage.setItem('token', data.token);
+        // Store the token and user data
+        localStorage.setItem('token', data.data.token);
+        localStorage.setItem('user', JSON.stringify(data.data.user));
+
+        // Dispatch auth state change event
+        const event = new CustomEvent('auth-state-change', { 
+          detail: data.data.user 
+        });
+        window.dispatchEvent(event);
 
         // Redirect to dashboard
         router.push('/dashboard');

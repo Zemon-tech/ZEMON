@@ -6,7 +6,10 @@ interface User {
   id: string;
   name: string;
   email: string;
-  token: string;
+  avatar?: string;
+  github?: string;
+  github_username?: string;
+  role: string;
 }
 
 interface AuthContextType {
@@ -28,13 +31,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for stored auth token
+    // Check for stored auth data
     if (typeof window !== 'undefined') {
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
         setUser(JSON.parse(storedUser));
       }
       setIsLoading(false);
+
+      // Listen for auth state changes
+      const handleAuthStateChange = (event: CustomEvent<User>) => {
+        const userData = event.detail;
+        setUser(userData);
+        localStorage.setItem('user', JSON.stringify(userData));
+      };
+
+      window.addEventListener('auth-state-change', handleAuthStateChange as EventListener);
+
+      return () => {
+        window.removeEventListener('auth-state-change', handleAuthStateChange as EventListener);
+      };
     }
   }, []);
 
@@ -53,8 +69,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       const data = await response.json();
-      setUser(data.user);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      const userData = data.data.user;
+      setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('token', data.data.token);
     } catch (error) {
       throw error;
     }
@@ -63,6 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
   };
 
   return (
