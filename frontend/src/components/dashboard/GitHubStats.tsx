@@ -48,20 +48,20 @@ export default function GitHubStats({ data }: GitHubStatsProps) {
   ];
 
   return (
-    <div className="p-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="p-4 sm:p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         {stats.map((stat) => (
           <div 
             key={stat.label} 
-            className="rounded-xl border border-muted/50 bg-card hover:bg-muted/5 p-4 flex flex-col transition-colors shadow-sm hover:shadow"
+            className="rounded-xl border border-muted/50 bg-card hover:bg-muted/5 p-3 sm:p-4 flex flex-col transition-colors shadow-sm hover:shadow"
           >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-muted-foreground">{stat.label}</span>
-              <div className={`p-2 rounded-full ${stat.iconBg} border border-${stat.accentColor.split('-')[1]}-200/30`}>
-                <stat.icon className={`w-4 h-4 ${stat.accentColor}`} />
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
+              <span className="text-xs sm:text-sm font-medium text-muted-foreground">{stat.label}</span>
+              <div className={`p-1.5 sm:p-2 rounded-full ${stat.iconBg} border border-${stat.accentColor.split('-')[1]}-200/30`}>
+                <stat.icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${stat.accentColor}`} />
               </div>
             </div>
-            <p className="text-3xl font-bold text-foreground">{stat.value}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-foreground">{stat.value.toLocaleString()}</p>
           </div>
         ))}
       </div>

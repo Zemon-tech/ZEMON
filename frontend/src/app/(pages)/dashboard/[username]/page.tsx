@@ -376,45 +376,45 @@ export default function UserDashboardPage() {
 
   return (
     <PageContainer>
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto py-4 sm:py-8 px-3 sm:px-6">
         {/* Profile Header - Redesigned with modern UI */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-muted/40">
-            <div className="h-32 bg-gradient-to-r from-primary/10 via-primary/15 to-primary/30 dark:from-primary/5 dark:to-primary/20 relative">
+            <div className="h-24 sm:h-32 bg-gradient-to-r from-primary/10 via-primary/15 to-primary/30 dark:from-primary/5 dark:to-primary/20 relative">
               <div className="absolute inset-0 bg-gradient-to-l from-black/20 to-transparent"></div>
               <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-card to-transparent"></div>
-              <div className="absolute top-4 right-4 flex gap-2">
+              <div className="absolute top-2 sm:top-4 right-2 sm:right-4 flex gap-2">
                 {isCurrentUserProfile && (
-                  <Button variant="outline" size="sm" className="gap-2 bg-background/80 backdrop-blur-sm hover:bg-background/90 border-muted/50" onClick={() => router.push('/settings')}>
-                    <Edit className="w-4 h-4" />
+                  <Button variant="outline" size="sm" className="gap-1 sm:gap-2 bg-background/80 backdrop-blur-sm hover:bg-background/90 border-muted/50 text-xs sm:text-sm" onClick={() => router.push('/settings')}>
+                    <Edit className="w-3 h-3 sm:w-4 sm:h-4" />
                     Edit Profile
                   </Button>
                 )}
-                <Button variant="outline" size="sm" className="gap-2 bg-background/80 backdrop-blur-sm hover:bg-background/90 border-muted/50" onClick={handleShareProfile}>
-                  <Share2 className="w-4 h-4" />
+                <Button variant="outline" size="sm" className="gap-1 sm:gap-2 bg-background/80 backdrop-blur-sm hover:bg-background/90 border-muted/50 text-xs sm:text-sm" onClick={handleShareProfile}>
+                  <Share2 className="w-3 h-3 sm:w-4 sm:h-4" />
                   Share
                 </Button>
               </div>
             </div>
             
-            <div className="px-6 pb-6 relative">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 relative">
               <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex-shrink-0 -mt-12 z-10">
+                <div className="flex-shrink-0 -mt-10 sm:-mt-12 z-10">
                   <div className="rounded-full p-1 bg-card ring-2 ring-background shadow-md border border-muted/40">
-                    <Avatar className="w-24 h-24 border border-muted/50">
+                    <Avatar className="w-20 h-20 sm:w-24 sm:h-24 border border-muted/50">
                       <AvatarImage src={user.avatar} alt={user.name} />
-                      <AvatarFallback className="text-xl bg-primary/10">
+                      <AvatarFallback className="text-lg sm:text-xl bg-primary/10">
                         {getInitials(user.name)}
                       </AvatarFallback>
                     </Avatar>
                   </div>
                 </div>
                 
-                <div className="flex-1 pt-1 md:pt-0 md:mt-4">
+                <div className="flex-1 pt-0 md:pt-0 md:mt-4">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-3">
-                    <div className="p-3 bg-muted/5 rounded-lg border border-muted/30">
-                      <h1 className="text-2xl font-bold tracking-tight">{user.displayName || user.name}</h1>
-                      <p className="text-base text-muted-foreground flex items-center gap-2">
+                    <div className="p-2 sm:p-3 bg-muted/5 rounded-lg border border-muted/30">
+                      <h1 className="text-xl sm:text-2xl font-bold tracking-tight">{user.displayName || user.name}</h1>
+                      <p className="text-sm sm:text-base text-muted-foreground flex items-center gap-2">
                         <span className="text-primary font-medium">@{user.name}</span>
                       </p>
                     </div>
@@ -427,8 +427,8 @@ export default function UserDashboardPage() {
                           rel="noopener noreferrer"
                           className="hover:no-underline"
                         >
-                          <Button variant="outline" size="sm" className="gap-1.5 h-9 rounded-full px-4 border-muted/50">
-                            <Github className="w-4 h-4" />
+                          <Button variant="outline" size="sm" className="gap-1.5 h-8 sm:h-9 rounded-full px-3 sm:px-4 border-muted/50 text-xs sm:text-sm">
+                            <Github className="w-3 h-3 sm:w-4 sm:h-4" />
                             GitHub
                           </Button>
                         </a>
@@ -440,8 +440,8 @@ export default function UserDashboardPage() {
                           rel="noopener noreferrer"
                           className="hover:no-underline"
                         >
-                          <Button variant="outline" size="sm" className="gap-1.5 h-9 rounded-full px-4 border-muted/50">
-                            <Linkedin className="w-4 h-4" />
+                          <Button variant="outline" size="sm" className="gap-1.5 h-8 sm:h-9 rounded-full px-3 sm:px-4 border-muted/50 text-xs sm:text-sm">
+                            <Linkedin className="w-3 h-3 sm:w-4 sm:h-4" />
                             LinkedIn
                           </Button>
                         </a>
@@ -453,8 +453,8 @@ export default function UserDashboardPage() {
                           rel="noopener noreferrer"
                           className="hover:no-underline"
                         >
-                          <Button variant="outline" size="sm" className="gap-1.5 h-9 rounded-full px-4 border-muted/50">
-                            <Globe className="w-4 h-4" />
+                          <Button variant="outline" size="sm" className="gap-1.5 h-8 sm:h-9 rounded-full px-3 sm:px-4 border-muted/50 text-xs sm:text-sm">
+                            <Globe className="w-3 h-3 sm:w-4 sm:h-4" />
                             Portfolio
                           </Button>
                         </a>
@@ -463,8 +463,8 @@ export default function UserDashboardPage() {
                   </div>
                   
                   {user.education?.university && (
-                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-graduation-cap">
+                    <div className="flex items-center gap-1.5 text-xs sm:text-sm text-muted-foreground">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-graduation-cap sm:w-4 sm:h-4">
                         <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
                         <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
                       </svg>
@@ -483,11 +483,11 @@ export default function UserDashboardPage() {
         </div>
         
         {/* GitHub Stats - Redesigned */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-muted/40">
-            <div className="p-6 pb-0 border-b border-muted/40">
-              <h2 className="text-2xl font-bold flex items-center gap-2">
-                <Github className="w-6 h-6 text-primary" />
+            <div className="p-4 sm:p-6 pb-0 border-b border-muted/40">
+              <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                <Github className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                 GitHub Stats
               </h2>
             </div>
@@ -504,42 +504,42 @@ export default function UserDashboardPage() {
         </div>
         
         {/* Tabs - Redesigned */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-muted/40">
             <Tabs defaultValue="repositories" className="w-full">
-              <div className="border-b border-muted/40">
-                <div className="px-6 pt-6">
+              <div className="border-b border-muted/40 overflow-x-auto">
+                <div className="px-4 sm:px-6 pt-4 sm:pt-6">
                   <TabsList className="w-full flex justify-start space-x-2 bg-transparent p-0">
                     <TabsTrigger 
                       value="repositories" 
-                      className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent px-4 py-2 rounded-none transition-colors"
+                      className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent px-3 sm:px-4 py-2 rounded-none transition-colors whitespace-nowrap text-sm"
                     >
-                      <div className="flex items-center gap-2">
-                        <GitFork className="w-4 h-4" />
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <GitFork className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span>Zemon Repos</span>
-                        <Badge variant="outline" className="ml-1 rounded-full px-2.5 py-0.5 text-xs">
+                        <Badge variant="outline" className="ml-1 rounded-full px-2 py-0 text-xs hidden sm:inline-flex">
                           {publishedProjects.length}
                         </Badge>
                       </div>
                     </TabsTrigger>
                     <TabsTrigger 
                       value="tools" 
-                      className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent px-4 py-2 rounded-none transition-colors"
+                      className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent px-3 sm:px-4 py-2 rounded-none transition-colors whitespace-nowrap text-sm"
                     >
-                      <div className="flex items-center gap-2">
-                        <Star className="w-4 h-4" />
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <Star className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span>Zemon Tools</span>
-                        <Badge variant="outline" className="ml-1 rounded-full px-2.5 py-0.5 text-xs">
+                        <Badge variant="outline" className="ml-1 rounded-full px-2 py-0 text-xs hidden sm:inline-flex">
                           {userTools.length}
                         </Badge>
                       </div>
                     </TabsTrigger>
                     <TabsTrigger 
                       value="activity" 
-                      className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent px-4 py-2 rounded-none transition-colors"
+                      className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent px-3 sm:px-4 py-2 rounded-none transition-colors whitespace-nowrap text-sm"
                     >
-                      <div className="flex items-center gap-2">
-                        <ExternalLink className="w-4 h-4" />
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span>Activity</span>
                       </div>
                     </TabsTrigger>
@@ -548,39 +548,39 @@ export default function UserDashboardPage() {
               </div>
               
               {/* Repositories Tab Content */}
-              <TabsContent value="repositories" className="p-6 focus-visible:outline-none focus-visible:ring-0">
+              <TabsContent value="repositories" className="p-4 sm:p-6 focus-visible:outline-none focus-visible:ring-0">
                 {publishedProjects.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                     {publishedProjects.map((project) => (
                       <Card key={project._id} className="overflow-hidden border border-muted/50 hover:border-primary/30 transition-colors hover:shadow-md">
-                        <CardContent className="p-5">
+                        <CardContent className="p-4 sm:p-5">
                           <div className="flex items-start justify-between mb-2">
-                            <h3 className="font-medium text-lg">{project.name}</h3>
+                            <h3 className="font-medium text-base sm:text-lg line-clamp-1">{project.name}</h3>
                             {project.githubUrl && (
                               <a 
                                 href={project.githubUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-muted-foreground hover:text-primary"
+                                className="text-muted-foreground hover:text-primary ml-2 flex-shrink-0"
                               >
-                                <ExternalLink className="w-4 h-4" />
+                                <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
                               </a>
                             )}
                           </div>
-                          <p className="text-muted-foreground text-sm mb-4 line-clamp-2 min-h-[40px]">
+                          <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 min-h-[32px] sm:min-h-[40px]">
                             {project.description}
                           </p>
-                          <div className="flex items-center gap-4 text-sm mt-auto">
+                          <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm mt-auto">
                             <span className="flex items-center gap-1 text-muted-foreground">
-                              <Star className="w-4 h-4 text-yellow-500" />
+                              <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />
                               {project.stars}
                             </span>
                             <span className="flex items-center gap-1 text-muted-foreground">
-                              <GitFork className="w-4 h-4 text-blue-500" />
+                              <GitFork className="w-3 h-3 sm:w-4 sm:h-4 text-blue-500" />
                               {project.forks}
                             </span>
                             {project.language && (
-                              <Badge variant="outline" className="ml-auto border-muted/50">
+                              <Badge variant="outline" className="ml-auto border-muted/50 text-xs">
                                 {project.language}
                               </Badge>
                             )}
@@ -590,17 +590,17 @@ export default function UserDashboardPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-12 bg-muted/10 rounded-lg border border-dashed border-muted/50">
-                    <h3 className="text-lg font-medium mb-2">No repositories yet</h3>
-                    <p className="text-muted-foreground">This user hasn&apos;t published any repositories.</p>
+                  <div className="text-center py-8 sm:py-12 bg-muted/10 rounded-lg border border-dashed border-muted/50">
+                    <h3 className="text-base sm:text-lg font-medium mb-2">No repositories yet</h3>
+                    <p className="text-muted-foreground text-sm">This user hasn&apos;t published any repositories.</p>
                   </div>
                 )}
               </TabsContent>
               
               {/* Tools Tab Content */}
-              <TabsContent value="tools" className="p-6 focus-visible:outline-none focus-visible:ring-0">
+              <TabsContent value="tools" className="p-4 sm:p-6 focus-visible:outline-none focus-visible:ring-0">
                 {userTools.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                     {userTools.map((tool) => (
                       <Card key={tool._id} className="overflow-hidden border border-muted/50 hover:border-primary/30 transition-colors hover:shadow-md">
                         {tool.thumbnail && (
@@ -612,40 +612,40 @@ export default function UserDashboardPage() {
                               className="object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end">
-                              <div className="p-4 w-full">
+                              <div className="p-3 sm:p-4 w-full">
                                 <a 
                                   href={tool.url} 
                                   target="_blank" 
                                   rel="noopener noreferrer"
-                                  className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2 rounded-md hover:bg-primary/90 transition-colors"
+                                  className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-1.5 sm:py-2 rounded-md hover:bg-primary/90 transition-colors text-xs sm:text-sm"
                                 >
-                                  <ExternalLink className="w-4 h-4" />
+                                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
                                   Visit Tool
                                 </a>
                               </div>
                             </div>
                           </div>
                         )}
-                        <CardContent className="p-5">
+                        <CardContent className="p-4 sm:p-5">
                           <div className="flex items-start justify-between mb-2">
-                            <h3 className="font-medium text-lg">{tool.name}</h3>
-                            <span className="flex items-center gap-1 text-muted-foreground">
-                              <Eye className="w-4 h-4" />
+                            <h3 className="font-medium text-base sm:text-lg line-clamp-1">{tool.name}</h3>
+                            <span className="flex items-center gap-1 text-muted-foreground text-xs sm:text-sm ml-2">
+                              <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
                               {tool.views}
                             </span>
                           </div>
-                          <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
+                          <p className="text-muted-foreground text-xs sm:text-sm mb-3 line-clamp-2">
                             {tool.description}
                           </p>
-                          <div className="flex flex-wrap gap-2 mb-3">
+                          <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3">
                             {tool.tags.slice(0, 3).map((tag, index) => (
-                              <Badge key={index} variant="secondary" className="border border-muted/30">{tag}</Badge>
+                              <Badge key={index} variant="secondary" className="border border-muted/30 text-xs">{tag}</Badge>
                             ))}
                             {tool.tags.length > 3 && (
-                              <Badge variant="outline" className="border-muted/50">+{tool.tags.length - 3}</Badge>
+                              <Badge variant="outline" className="border-muted/50 text-xs">+{tool.tags.length - 3}</Badge>
                             )}
                           </div>
-                          <div className="flex justify-between items-center mt-4">
+                          <div className="flex justify-between items-center mt-3 sm:mt-4">
                             <Badge variant="outline" className="text-xs border-muted/50">
                               {tool.category}
                             </Badge>
@@ -653,7 +653,7 @@ export default function UserDashboardPage() {
                               href={tool.url} 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1 text-primary hover:underline text-sm"
+                              className="flex items-center gap-1 text-primary hover:underline text-xs sm:text-sm"
                             >
                               <ExternalLink className="w-3 h-3" />
                               Visit
@@ -664,18 +664,18 @@ export default function UserDashboardPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-12 bg-muted/10 rounded-lg border border-dashed border-muted/50">
-                    <h3 className="text-lg font-medium mb-2">No tools yet</h3>
-                    <p className="text-muted-foreground">This user hasn&apos;t published any tools.</p>
+                  <div className="text-center py-8 sm:py-12 bg-muted/10 rounded-lg border border-dashed border-muted/50">
+                    <h3 className="text-base sm:text-lg font-medium mb-2">No tools yet</h3>
+                    <p className="text-muted-foreground text-sm">This user hasn&apos;t published any tools.</p>
                   </div>
                 )}
               </TabsContent>
               
               {/* Activity Tab Content */}
-              <TabsContent value="activity" className="p-6 focus-visible:outline-none focus-visible:ring-0">
-                <div className="text-center py-12 bg-muted/10 rounded-lg border border-dashed border-muted/50">
-                  <h3 className="text-lg font-medium mb-2">Coming soon</h3>
-                  <p className="text-muted-foreground">Activity tracking will be available soon.</p>
+              <TabsContent value="activity" className="p-4 sm:p-6 focus-visible:outline-none focus-visible:ring-0">
+                <div className="text-center py-8 sm:py-12 bg-muted/10 rounded-lg border border-dashed border-muted/50">
+                  <h3 className="text-base sm:text-lg font-medium mb-2">Coming soon</h3>
+                  <p className="text-muted-foreground text-sm">Activity tracking will be available soon.</p>
                 </div>
               </TabsContent>
             </Tabs>
@@ -684,9 +684,9 @@ export default function UserDashboardPage() {
         
         {/* GitHub Repositories - Moved to appear after the Tabs component */}
         {githubRepos.length > 0 && (
-          <div className="bg-card rounded-xl shadow-sm p-6 mb-8 border border-muted/40">
-            <h2 className="text-2xl font-bold flex items-center gap-2 mb-6">
-              <Github className="w-6 h-6" />
+          <div className="bg-card rounded-xl shadow-sm p-4 sm:p-6 mb-6 sm:mb-8 border border-muted/40">
+            <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-2 mb-4 sm:mb-6">
+              <Github className="w-5 h-5 sm:w-6 sm:h-6" />
               GitHub Repositories
             </h2>
             

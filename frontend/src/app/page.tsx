@@ -103,6 +103,29 @@ export default function HomePage() {
     { icon: <Heart className="w-5 h-5" />, text: "Open Source First" },
   ];
 
+  const innovationImages = [
+    {
+      src: "/collaboration.jpg",
+      alt: "Elite developers collaborating on innovative projects",
+      title: "Elite Network"
+    },
+    {
+      src: " techWorkspace.jpg",
+      alt: "Modern tech workspace with industry leaders",
+      title: "Industry Leaders"
+    },
+    {
+      src: "/successStory.jpg",
+      alt: "Successful project launch celebration",
+      title: "Top Opportunities"
+    },
+    {
+      src: "techStack.jpg",
+      alt: "Modern development tools and technologies",
+      title: "Innovation Hub"
+    }
+  ];
+
   useEffect(() => {
     const checkUserAndAlert = async () => {
       // Check if user is logged in
@@ -248,7 +271,7 @@ export default function HomePage() {
       )}
 
       {/* Hero Section - Enhanced with better gradient */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-background to-muted/50">
+      <section className="relative min-h-[80vh] md:min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-background to-muted/50 py-12 md:py-0">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-background" />
         <div className="absolute inset-0">
           <svg
@@ -288,21 +311,30 @@ export default function HomePage() {
             <Badge className="px-4 py-2 rounded-full mb-4" variant="secondary">
               🚀 Join 10,000+ developers
             </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold text-[#1e293b]">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-[#1e293b] px-4">
               Build Your Tech Legacy
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-lg md:text-xl text-muted-foreground px-4">
               Connect with elite developers, showcase your innovations, and shape the future of technology.
             </p>
-            <div className="flex gap-4 justify-center">
-              <Button size="lg" className="gap-2 shadow-lg shadow-primary/20">
-                Get Started <ArrowRight className="w-4 h-4" />
+            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
+              <Button 
+                size="lg" 
+                className="gap-2 shadow-lg shadow-primary/20 w-full sm:w-auto"
+                onClick={() => router.push(user ? '/repos' : '/login')}
+              >
+                {user ? 'Explore Projects' : 'Get Started'} <ArrowRight className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline">
-                View Opportunities
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="w-full sm:w-auto"
+                onClick={() => router.push(user ? '/store' : '/repos')}
+              >
+                {user ? 'Browse Tools' : 'View Opportunities'}
               </Button>
             </div>
-            <div className="pt-8 flex justify-center gap-8">
+            <div className="pt-8 flex flex-wrap justify-center gap-4 md:gap-8 px-4">
               {highlights.map((item, i) => (
                 <motion.div
                   key={i}
@@ -321,10 +353,10 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section - Smoother transition */}
-      <section className="py-20 bg-gradient-to-b from-muted/50 to-background relative overflow-hidden">
+      <section className="py-12 md:py-20 bg-gradient-to-b from-muted/50 to-background relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-white/5" />
         <div className="container relative">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {stats.map((stat, index) => (
               <Card key={stat.label} className="bg-background/60 backdrop-blur-sm border-primary/5 hover:border-primary/20 transition-all">
                 <CardContent className="p-6 text-center">
@@ -344,15 +376,15 @@ export default function HomePage() {
       </section>
 
       {/* Features Section - Clean background */}
-      <section className="py-20 bg-background">
+      <section className="py-12 md:py-20 bg-background">
         <div className="container">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold">Everything You Need</h2>
+          <div className="text-center mb-8 md:mb-16 px-4">
+            <h2 className="text-2xl md:text-3xl font-bold">Everything You Need</h2>
             <p className="text-muted-foreground mt-2">
               A complete platform for developers to learn, share, and grow together
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 px-4 md:px-0">
             {features.map((feature, index) => (
               <Link href={feature.link} key={feature.title}>
                 <motion.div
@@ -374,16 +406,16 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials Section - Subtle gradient */}
-      <section className="py-20 bg-gradient-to-b from-background to-muted/30">
+      <section className="py-12 md:py-20 bg-gradient-to-b from-background to-muted/30">
         <div className="container">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 md:mb-16 px-4">
             <Badge variant="secondary" className="mb-4">Testimonials</Badge>
-            <h2 className="text-3xl font-bold">Loved by Developers</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">Loved by Developers</h2>
             <p className="text-muted-foreground mt-2">
               See what our community members have to say
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 px-4 md:px-0">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
@@ -412,81 +444,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Projects Section - Clean background */}
-      <section className="pt-8 pb-4 bg-background">
-        <div className="container">
-          <div className="text-center mb-6">
-            <Badge variant="secondary" className="mb-3">Featured Projects</Badge>
-            <h2 className="text-3xl font-bold">Trending This Week</h2>
-            <p className="text-muted-foreground mt-2">
-              Discover popular projects from our community
-            </p>
-          </div>
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="justify-center mb-4">
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="web">Web Dev</TabsTrigger>
-              <TabsTrigger value="mobile">Mobile</TabsTrigger>
-              <TabsTrigger value="ai">AI/ML</TabsTrigger>
-            </TabsList>
-            <TabsContent value="all" className="min-h-[80px] flex items-center justify-center">
-              <HyperText
-                className="text-2xl text-muted-foreground"
-                duration={1000}
-                startOnView={true}
-                animateOnHover={true}
-              >
-                COMING SOON !!
-              </HyperText>
-            </TabsContent>
-            <TabsContent value="web" className="min-h-[80px] flex items-center justify-center">
-              <HyperText
-                className="text-2xl text-muted-foreground"
-                duration={1000}
-                startOnView={true}
-                animateOnHover={true}
-              >
-                COMING SOON !!
-              </HyperText>
-            </TabsContent>
-            <TabsContent value="mobile" className="min-h-[80px] flex items-center justify-center">
-              <HyperText
-                className="text-2xl text-muted-foreground"
-                duration={1000}
-                startOnView={true}
-                animateOnHover={true}
-              >
-                COMING SOON !!
-              </HyperText>
-            </TabsContent>
-            <TabsContent value="ai" className="min-h-[80px] flex items-center justify-center">
-              <HyperText
-                className="text-2xl text-muted-foreground"
-                duration={1000}
-                startOnView={true}
-                animateOnHover={true}
-              >
-                COMING SOON !!
-              </HyperText>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </section>
-
       {/* Community Section - Gradient background */}
       <section className="py-12 bg-gradient-to-b from-background via-muted/20 to-primary/5">
         <div className="container">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center px-4 md:px-0">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="space-y-6"
             >
-              <h2 className="text-3xl font-bold">Where Innovation Happens</h2>
+              <h2 className="text-2xl md:text-3xl font-bold">Where Innovation Happens</h2>
               <p className="text-muted-foreground">
                 Be part of an elite network of developers building the next generation of technology. Your expertise and innovations deserve a powerful platform.
               </p>
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex items-center gap-2">
                   <Users className="w-5 h-5 text-primary" />
                   <span>Elite Network</span>
@@ -500,8 +471,11 @@ export default function HomePage() {
                   <span>Top Opportunities</span>
                 </div>
               </div>
-              <Button className="gap-2">
-                Start Building <ArrowRight className="w-4 h-4" />
+              <Button 
+                className="gap-2 w-full sm:w-auto"
+                onClick={() => router.push(user ? '/repos' : '/login')}
+              >
+                {user ? 'Start Contributing' : 'Start Building'} <ArrowRight className="w-4 h-4" />
               </Button>
             </motion.div>
             <motion.div
@@ -509,8 +483,20 @@ export default function HomePage() {
               animate={{ opacity: 1, x: 0 }}
               className="grid grid-cols-2 gap-4"
             >
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="aspect-square rounded-lg bg-card border animate-pulse" />
+              {innovationImages.map((image, i) => (
+                <div 
+                  key={i} 
+                  className="group relative aspect-square rounded-lg overflow-hidden bg-card border hover:border-primary/50 transition-all"
+                >
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                    <span className="text-white text-sm font-medium">{image.title}</span>
+                  </div>
+                </div>
               ))}
             </motion.div>
           </div>
@@ -518,7 +504,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section - Final gradient */}
-      <section className="relative py-16 bg-gradient-to-b from-background to-muted">
+      <section className="relative py-12 md:py-16 bg-gradient-to-b from-background to-muted">
         <div className="absolute inset-0">
           <FlickeringGrid className="w-full h-full" color="rgb(0, 0, 0)" maxOpacity={0.1} />
         </div>
@@ -527,19 +513,19 @@ export default function HomePage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-3xl mx-auto text-center space-y-6"
+            className="max-w-3xl mx-auto text-center space-y-6 px-4"
           >
-            <h2 className="text-3xl font-bold">Ready to Make an Impact?</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">Ready to Make an Impact?</h2>
             <p className="text-muted-foreground">
               Join an exclusive platform where top developers collaborate on groundbreaking projects.
             </p>
             <div className="flex justify-center">
               <Button 
                 size="lg" 
-                className="gap-2 shadow-lg shadow-primary/20"
-                onClick={() => router.push('/login')}
+                className="gap-2 shadow-lg shadow-primary/20 w-full sm:w-auto hover:shadow-xl hover:shadow-primary/30 transition-all"
+                onClick={() => router.push(user ? '/repos' : '/login')}
               >
-                Register Now <ArrowRight className="w-4 h-4" />
+                {user ? 'Explore Projects' : 'Register Now'} <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
           </motion.div>
