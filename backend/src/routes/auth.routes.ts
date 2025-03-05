@@ -210,12 +210,7 @@ router.post('/github/sync', async (req, res, next) => {
     }
 
     // Find or create user
-    let user = await User.findOne({ 
-      $or: [
-        { email },
-        { _id } // Also try to find by Supabase ID if email doesn't match
-      ]
-    });
+    let user = await User.findOne({ email });
     let isNewUser = false;
     
     if (user) {
@@ -233,7 +228,6 @@ router.post('/github/sync', async (req, res, next) => {
       const randomPassword = crypto.randomBytes(16).toString('hex'); // 32 characters long
       
       user = await User.create({
-        _id, // Use the Supabase ID if provided
         name,
         displayName: name, // Initially set displayName same as name
         email,
@@ -264,7 +258,8 @@ router.post('/github/sync', async (req, res, next) => {
       avatar: user.avatar,
       github: user.github,
       github_username: user.github_username,
-      role: user.role
+      role: user.role,
+      supabase_id: _id // Store the Supabase ID separately
     };
 
     res.json({

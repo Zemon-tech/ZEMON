@@ -58,6 +58,11 @@ const userSchema = new Schema<IUser>({
     type: String,
     enum: ['user', 'admin'],
     default: 'user'
+  },
+  supabase_id: {
+    type: String,
+    sparse: true,
+    unique: true
   }
 }, {
   timestamps: true

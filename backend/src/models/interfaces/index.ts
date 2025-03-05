@@ -18,6 +18,7 @@ export interface IUser extends Document {
     graduationYear: number;
   };
   role: 'user' | 'admin';
+  supabase_id?: string;
   comparePassword(candidatePassword: string): Promise<boolean>;
   createdAt: Date;
   updatedAt: Date;
