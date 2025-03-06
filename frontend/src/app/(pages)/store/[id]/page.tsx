@@ -202,42 +202,42 @@ export default function StoreItemPage() {
   }
 
   return (
-    <PageContainer className="py-8">
+    <PageContainer className="py-4 sm:py-8">
       <div className="max-w-6xl mx-auto">
         {/* Back Button */}
         <Link 
           href="/store" 
-          className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-8 group"
+          className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-4 sm:mb-8 group"
         >
           <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
           Back to Store
         </Link>
 
         {/* Hero Section */}
-        <div className="flex items-start gap-8 mb-12">
-          <div className="relative w-40 h-40">
+        <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 mb-6 sm:mb-12">
+          <div className="relative w-full sm:w-40 h-40 sm:h-40">
             <Image
               src={tool.thumbnail}
               alt={`${tool.name} thumbnail`}
               width={500}
               height={300}
-              className="w-full h-auto rounded-lg"
+              className="w-full h-full object-cover rounded-lg"
             />
           </div>
 
-          <div className="flex-1">
-            <div className="flex items-start justify-between">
+          <div className="flex-1 w-full">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div>
-                <h1 className="text-4xl font-bold">{tool.name}</h1>
-                <p className="text-lg text-muted-foreground mt-2">
+                <h1 className="text-2xl sm:text-4xl font-bold">{tool.name}</h1>
+                <p className="text-base sm:text-lg text-muted-foreground mt-2">
                   by {tool.author?.name || 'Unknown Developer'}
                 </p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 w-full sm:w-auto">
                 <Button 
                   onClick={() => window.open(tool.url, '_blank')}
                   size="lg"
-                  className="gap-2"
+                  className="gap-2 flex-1 sm:flex-none"
                 >
                   Visit Tool
                 </Button>
@@ -246,7 +246,7 @@ export default function StoreItemPage() {
                     variant="outline" 
                     size="lg"
                     onClick={() => window.open(tool.dev_docs, '_blank')}
-                    className="gap-2"
+                    className="gap-2 flex-1 sm:flex-none"
                   >
                     <Book className="w-4 h-4" />
                     Documentation
@@ -256,13 +256,13 @@ export default function StoreItemPage() {
             </div>
 
             {/* Rating & Stats */}
-            <div className="flex items-center gap-6 mt-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-4">
               <div className="flex items-center gap-2">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-6 h-6 ${
+                      className={`w-5 h-5 sm:w-6 sm:h-6 ${
                         i < Math.floor(tool.average_rating)
                           ? "fill-yellow-400 text-yellow-400"
                           : "fill-muted text-muted"
@@ -271,15 +271,15 @@ export default function StoreItemPage() {
                   ))}
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-2xl font-bold">
+                  <span className="text-xl sm:text-2xl font-bold">
                     {tool.average_rating.toFixed(1)}
                   </span>
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-xs sm:text-sm text-muted-foreground">
                     {tool.total_reviews} {tool.total_reviews === 1 ? 'review' : 'reviews'}
                   </span>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 sm:gap-4">
                 <Badge variant="outline">{tool.category}</Badge>
                 <Badge variant="outline">{tool.price}</Badge>
               </div>
@@ -288,38 +288,41 @@ export default function StoreItemPage() {
         </div>
 
         {/* Tabs Section */}
-        <Tabs defaultValue="overview" className="space-y-8">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
-            <TabsTrigger value="developer">Developer</TabsTrigger>
-          </TabsList>
+        <Tabs defaultValue="overview" className="space-y-6 sm:space-y-8">
+          <div className="border-b">
+            <TabsList className="w-full justify-start">
+              <TabsTrigger value="overview" className="flex-1 sm:flex-none">Overview</TabsTrigger>
+              <TabsTrigger value="reviews" className="flex-1 sm:flex-none">Reviews</TabsTrigger>
+              <TabsTrigger value="developer" className="flex-1 sm:flex-none">Developer</TabsTrigger>
+            </TabsList>
+          </div>
 
-          <TabsContent value="overview" className="space-y-8">
+          <TabsContent value="overview" className="space-y-6 sm:space-y-8">
             {/* Description */}
             <div className="prose dark:prose-invert max-w-none">
-              <h2 className="text-2xl font-semibold mb-4">About this tool</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">About this tool</h2>
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
                 {tool.description}
               </p>
             </div>
 
             {/* Images Section */}
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-semibold">Images</h2>
+            <div className="space-y-4 sm:space-y-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <h2 className="text-xl sm:text-2xl font-semibold">Images</h2>
                 {currentUserId && tool?.author?._id && currentUserId === tool.author._id && (
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
                     <Input
                       type="url"
                       placeholder="Enter image URL"
                       value={newImageUrl}
                       onChange={(e) => setNewImageUrl(e.target.value)}
-                      className="w-80"
+                      className="w-full sm:w-80"
                     />
                     <Button 
                       onClick={handleAddImage}
                       disabled={!newImageUrl || isAddingImage}
+                      className="w-full sm:w-auto"
                     >
                       {isAddingImage ? "Adding..." : "Add Image"}
                     </Button>
@@ -344,11 +347,11 @@ export default function StoreItemPage() {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
+                  <CarouselPrevious className="hidden sm:flex" />
+                  <CarouselNext className="hidden sm:flex" />
                 </Carousel>
               ) : (
-                <div className="text-center py-12 text-muted-foreground border rounded-xl">
+                <div className="text-center py-8 sm:py-12 text-muted-foreground border rounded-xl">
                   No images available
                 </div>
               )}
@@ -356,7 +359,7 @@ export default function StoreItemPage() {
 
             {/* Tags */}
             <div>
-              <h2 className="text-2xl font-semibold mb-4">Tags</h2>
+              <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Tags</h2>
               <div className="flex flex-wrap gap-2">
                 {tool.tags.map((tag) => (
                   <Badge key={tag} variant="secondary">
@@ -367,10 +370,10 @@ export default function StoreItemPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="reviews" className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <TabsContent value="reviews" className="space-y-6 sm:space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               <div>
-                <h2 className="text-2xl font-semibold mb-6">
+                <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
                   {userReview ? 'Your Review' : 'Add Your Review'}
                 </h2>
                 <RatingForm 
@@ -382,17 +385,17 @@ export default function StoreItemPage() {
                 />
               </div>
               <div>
-                <h2 className="text-2xl font-semibold mb-6">
+                <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
                   Reviews ({tool.total_reviews})
                 </h2>
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {tool.reviews && tool.reviews.length > 0 ? (
                     tool.reviews.map((review, index) => (
                       <div
                         key={index}
-                        className="bg-card border rounded-xl p-6 space-y-4"
+                        className="bg-card border rounded-xl p-4 sm:p-6 space-y-3 sm:space-y-4"
                       >
-                        <div className="flex items-start justify-between">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                           <div className="flex items-center gap-3">
                             <Avatar>
                               <AvatarFallback>
@@ -401,7 +404,7 @@ export default function StoreItemPage() {
                             </Avatar>
                             <div>
                               <p className="font-medium">{review.user_name}</p>
-                              <p className="text-sm text-muted-foreground">
+                              <p className="text-xs sm:text-sm text-muted-foreground">
                                 {new Date(review.createdAt).toLocaleDateString()}
                               </p>
                             </div>
@@ -419,11 +422,11 @@ export default function StoreItemPage() {
                             ))}
                           </div>
                         </div>
-                        <p className="text-muted-foreground">{review.comment}</p>
+                        <p className="text-sm sm:text-base text-muted-foreground">{review.comment}</p>
                       </div>
                     ))
                   ) : (
-                    <div className="text-center text-muted-foreground py-8">
+                    <div className="text-center text-muted-foreground py-6 sm:py-8">
                       No reviews yet. Be the first to review!
                     </div>
                   )}
@@ -432,17 +435,17 @@ export default function StoreItemPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="developer" className="space-y-6">
-            <div className="bg-card border rounded-xl p-8">
-              <div className="flex items-center gap-6 mb-8">
-                <Avatar className="w-20 h-20">
+          <TabsContent value="developer" className="space-y-4 sm:space-y-6">
+            <div className="bg-card border rounded-xl p-4 sm:p-8">
+              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+                <Avatar className="w-16 h-16 sm:w-20 sm:h-20">
                   <AvatarImage src={tool.author?.avatar} />
                   <AvatarFallback>
                     {tool.author?.name?.charAt(0) || 'U'}
                   </AvatarFallback>
                 </Avatar>
-                <div>
-                  <h2 className="text-2xl font-semibold">
+                <div className="text-center sm:text-left">
+                  <h2 className="text-xl sm:text-2xl font-semibold">
                     {tool.author?.name || 'Unknown Developer'}
                   </h2>
                 </div>
@@ -452,7 +455,7 @@ export default function StoreItemPage() {
                 <Button 
                   variant="outline" 
                   onClick={() => window.open(tool.github_url, '_blank')}
-                  className="gap-2"
+                  className="gap-2 w-full sm:w-auto"
                 >
                   <Code className="w-4 h-4" />
                   View Source Code

@@ -506,176 +506,81 @@ export default function UserDashboardPage() {
         {/* Tabs - Redesigned */}
         <div className="mb-6 sm:mb-8">
           <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-muted/40">
-            <Tabs defaultValue="repositories" className="w-full">
-              <div className="border-b border-muted/40 overflow-x-auto">
-                <div className="px-4 sm:px-6 pt-4 sm:pt-6">
-                  <TabsList className="w-full flex justify-start space-x-2 bg-transparent p-0">
-                    <TabsTrigger 
-                      value="repositories" 
-                      className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent px-3 sm:px-4 py-2 rounded-none transition-colors whitespace-nowrap text-sm"
-                    >
-                      <div className="flex items-center gap-1 sm:gap-2">
-                        <GitFork className="w-3 h-3 sm:w-4 sm:h-4" />
-                        <span>Zemon Repos</span>
-                        <Badge variant="outline" className="ml-1 rounded-full px-2 py-0 text-xs hidden sm:inline-flex">
-                          {publishedProjects.length}
-                        </Badge>
-                      </div>
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="tools" 
-                      className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent px-3 sm:px-4 py-2 rounded-none transition-colors whitespace-nowrap text-sm"
-                    >
-                      <div className="flex items-center gap-1 sm:gap-2">
-                        <Star className="w-3 h-3 sm:w-4 sm:h-4" />
-                        <span>Zemon Tools</span>
-                        <Badge variant="outline" className="ml-1 rounded-full px-2 py-0 text-xs hidden sm:inline-flex">
-                          {userTools.length}
-                        </Badge>
-                      </div>
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="activity" 
-                      className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent px-3 sm:px-4 py-2 rounded-none transition-colors whitespace-nowrap text-sm"
-                    >
-                      <div className="flex items-center gap-1 sm:gap-2">
-                        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
-                        <span>Activity</span>
-                      </div>
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
+            <Tabs defaultValue="overview" className="w-full">
+              <div className="bg-muted/5 border-b border-muted/40">
+                <TabsList className="w-full flex justify-start bg-transparent">
+                  <TabsTrigger 
+                    value="overview" 
+                    className="flex-1 data-[state=active]:bg-white dark:data-[state=active]:bg-background data-[state=active]:text-foreground px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Overview
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="activity" 
+                    className="flex-1 data-[state=active]:bg-white dark:data-[state=active]:bg-background data-[state=active]:text-foreground px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Activity
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="contributors" 
+                    className="flex-1 data-[state=active]:bg-white dark:data-[state=active]:bg-background data-[state=active]:text-foreground px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Contributors
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="dependencies" 
+                    className="flex-1 data-[state=active]:bg-white dark:data-[state=active]:bg-background data-[state=active]:text-foreground px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Dependencies
+                  </TabsTrigger>
+                </TabsList>
               </div>
-              
-              {/* Repositories Tab Content */}
-              <TabsContent value="repositories" className="p-4 sm:p-6 focus-visible:outline-none focus-visible:ring-0">
-                {publishedProjects.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                    {publishedProjects.map((project) => (
-                      <Card key={project._id} className="overflow-hidden border border-muted/50 hover:border-primary/30 transition-colors hover:shadow-md">
-                        <CardContent className="p-4 sm:p-5">
-                          <div className="flex items-start justify-between mb-2">
-                            <h3 className="font-medium text-base sm:text-lg line-clamp-1">{project.name}</h3>
-                            {project.githubUrl && (
-                              <a 
-                                href={project.githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-muted-foreground hover:text-primary ml-2 flex-shrink-0"
-                              >
-                                <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
-                              </a>
-                            )}
-                          </div>
-                          <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 min-h-[32px] sm:min-h-[40px]">
-                            {project.description}
-                          </p>
-                          <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm mt-auto">
-                            <span className="flex items-center gap-1 text-muted-foreground">
-                              <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />
-                              {project.stars}
-                            </span>
-                            <span className="flex items-center gap-1 text-muted-foreground">
-                              <GitFork className="w-3 h-3 sm:w-4 sm:h-4 text-blue-500" />
-                              {project.forks}
-                            </span>
-                            {project.language && (
-                              <Badge variant="outline" className="ml-auto border-muted/50 text-xs">
-                                {project.language}
-                              </Badge>
-                            )}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+
+              {/* Overview Tab Content */}
+              <TabsContent value="overview" className="focus-visible:outline-none focus-visible:ring-0">
+                <div className="p-4 sm:p-6">
+                  <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none">
+                    <div className="bg-muted/5 rounded-lg border border-muted/10 p-4 sm:p-6">
+                      <h2 className="text-xl sm:text-2xl font-bold mb-4">README.md</h2>
+                      <div className="space-y-4">
+                        <h1>SphereX - Open Source Community Platform</h1>
+                        <p className="text-muted-foreground">
+                          A modern platform for open source collaboration and community building.
+                        </p>
+                        {/* Add more README content as needed */}
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  <div className="text-center py-8 sm:py-12 bg-muted/10 rounded-lg border border-dashed border-muted/50">
-                    <h3 className="text-base sm:text-lg font-medium mb-2">No repositories yet</h3>
-                    <p className="text-muted-foreground text-sm">This user hasn&apos;t published any repositories.</p>
-                  </div>
-                )}
+                </div>
               </TabsContent>
-              
-              {/* Tools Tab Content */}
-              <TabsContent value="tools" className="p-4 sm:p-6 focus-visible:outline-none focus-visible:ring-0">
-                {userTools.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                    {userTools.map((tool) => (
-                      <Card key={tool._id} className="overflow-hidden border border-muted/50 hover:border-primary/30 transition-colors hover:shadow-md">
-                        {tool.thumbnail && (
-                          <div className="aspect-video relative">
-                            <Image 
-                              src={tool.thumbnail} 
-                              alt={tool.name} 
-                              fill
-                              className="object-cover"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end">
-                              <div className="p-3 sm:p-4 w-full">
-                                <a 
-                                  href={tool.url} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-1.5 sm:py-2 rounded-md hover:bg-primary/90 transition-colors text-xs sm:text-sm"
-                                >
-                                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
-                                  Visit Tool
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                        <CardContent className="p-4 sm:p-5">
-                          <div className="flex items-start justify-between mb-2">
-                            <h3 className="font-medium text-base sm:text-lg line-clamp-1">{tool.name}</h3>
-                            <span className="flex items-center gap-1 text-muted-foreground text-xs sm:text-sm ml-2">
-                              <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
-                              {tool.views}
-                            </span>
-                          </div>
-                          <p className="text-muted-foreground text-xs sm:text-sm mb-3 line-clamp-2">
-                            {tool.description}
-                          </p>
-                          <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3">
-                            {tool.tags.slice(0, 3).map((tag, index) => (
-                              <Badge key={index} variant="secondary" className="border border-muted/30 text-xs">{tag}</Badge>
-                            ))}
-                            {tool.tags.length > 3 && (
-                              <Badge variant="outline" className="border-muted/50 text-xs">+{tool.tags.length - 3}</Badge>
-                            )}
-                          </div>
-                          <div className="flex justify-between items-center mt-3 sm:mt-4">
-                            <Badge variant="outline" className="text-xs border-muted/50">
-                              {tool.category}
-                            </Badge>
-                            <a 
-                              href={tool.url} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1 text-primary hover:underline text-xs sm:text-sm"
-                            >
-                              <ExternalLink className="w-3 h-3" />
-                              Visit
-                            </a>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 sm:py-12 bg-muted/10 rounded-lg border border-dashed border-muted/50">
-                    <h3 className="text-base sm:text-lg font-medium mb-2">No tools yet</h3>
-                    <p className="text-muted-foreground text-sm">This user hasn&apos;t published any tools.</p>
-                  </div>
-                )}
-              </TabsContent>
-              
+
               {/* Activity Tab Content */}
-              <TabsContent value="activity" className="p-4 sm:p-6 focus-visible:outline-none focus-visible:ring-0">
-                <div className="text-center py-8 sm:py-12 bg-muted/10 rounded-lg border border-dashed border-muted/50">
-                  <h3 className="text-base sm:text-lg font-medium mb-2">Coming soon</h3>
-                  <p className="text-muted-foreground text-sm">Activity tracking will be available soon.</p>
+              <TabsContent value="activity" className="focus-visible:outline-none focus-visible:ring-0">
+                <div className="p-4 sm:p-6">
+                  <div className="text-center py-8 sm:py-12 bg-muted/5 rounded-lg border border-dashed border-muted/20">
+                    <h3 className="text-base sm:text-lg font-medium mb-2">Coming soon</h3>
+                    <p className="text-muted-foreground text-sm">Activity tracking will be available soon.</p>
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* Contributors Tab Content */}
+              <TabsContent value="contributors" className="focus-visible:outline-none focus-visible:ring-0">
+                <div className="p-4 sm:p-6">
+                  <div className="text-center py-8 sm:py-12 bg-muted/5 rounded-lg border border-dashed border-muted/20">
+                    <h3 className="text-base sm:text-lg font-medium mb-2">No contributors yet</h3>
+                    <p className="text-muted-foreground text-sm">Be the first to contribute to this project.</p>
+                  </div>
+                </div>
+              </TabsContent>
+
+              {/* Dependencies Tab Content */}
+              <TabsContent value="dependencies" className="focus-visible:outline-none focus-visible:ring-0">
+                <div className="p-4 sm:p-6">
+                  <div className="text-center py-8 sm:py-12 bg-muted/5 rounded-lg border border-dashed border-muted/20">
+                    <h3 className="text-base sm:text-lg font-medium mb-2">Dependencies list</h3>
+                    <p className="text-muted-foreground text-sm">Project dependencies will be listed here.</p>
+                  </div>
                 </div>
               </TabsContent>
             </Tabs>
