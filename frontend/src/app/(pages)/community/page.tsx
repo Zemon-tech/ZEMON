@@ -118,71 +118,71 @@ export default function CommunityPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-6xl mx-auto py-4 sm:py-8 px-3 sm:px-6"
+        className="max-w-6xl mx-auto py-6 sm:py-12 px-4 sm:px-6"
       >
         {/* Header Section */}
-        <div className="flex flex-col gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold">Community Hub</h1>
             <p className="text-sm sm:text-base text-muted-foreground mt-1">
               Share ideas, learn, and grow together with fellow developers
             </p>
           </div>
-          <Button onClick={handleShareClick} className="w-full sm:w-auto gap-2 h-9 sm:h-10">
-            <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <Button onClick={handleShareClick} className="w-full sm:w-auto gap-2">
+            <Plus className="w-4 h-4" />
             {activeTab === "ideas" ? "Share Idea" : "Share Resource"}
           </Button>
         </div>
 
         {/* Main Content */}
-        <Tabs defaultValue="ideas" className="space-y-4 sm:space-y-6" onValueChange={setActiveTab}>
-          <div className="flex flex-col gap-3 sm:gap-4">
-            <TabsList className="w-full sm:w-auto grid grid-cols-2 sm:flex h-auto p-1">
-              <TabsTrigger value="ideas" className="gap-2 px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base">
-                <Lightbulb className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+        <Tabs defaultValue="ideas" className="space-y-6 mt-6" onValueChange={setActiveTab}>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <TabsList className="w-full sm:w-auto">
+              <TabsTrigger value="ideas" className="gap-2">
+                <Lightbulb className="w-4 h-4" />
                 Ideas
               </TabsTrigger>
-              <TabsTrigger value="resources" className="gap-2 px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base">
-                <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <TabsTrigger value="resources" className="gap-2">
+                <FileText className="w-4 h-4" />
                 Resources
               </TabsTrigger>
             </TabsList>
 
-            <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <div className="flex gap-2 w-full sm:w-auto">
+              <div className="relative flex-1 sm:w-80">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
                   placeholder={`Search ${activeTab}...`}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 h-9 sm:h-10 text-sm sm:text-base"
+                  className="pl-9"
                 />
               </div>
-              <Button variant="outline" size="icon" className="h-9 w-9 sm:h-10 sm:w-10 shrink-0">
-                <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <Button variant="outline" size="icon">
+                <Filter className="w-4 h-4" />
               </Button>
             </div>
           </div>
 
-          <TabsContent value="ideas" className="space-y-4 sm:space-y-6 focus-visible:outline-none focus-visible:ring-0">
+          <TabsContent value="ideas" className="space-y-6">
             {/* Ideas Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {isLoading ? (
-                <div className="col-span-full flex items-center justify-center py-12">
+                <div className="col-span-full flex items-center justify-center py-8">
                   <div className="flex flex-col items-center gap-3">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                     <p className="text-sm sm:text-base text-muted-foreground">Loading ideas...</p>
                   </div>
                 </div>
               ) : error ? (
-                <div className="col-span-full flex items-center justify-center py-12">
-                  <div className="flex flex-col items-center gap-3 text-center px-4">
+                <div className="col-span-full flex items-center justify-center py-8">
+                  <div className="flex flex-col items-center gap-3 text-center">
                     <div className="rounded-full bg-red-100 p-3">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <p className="text-sm sm:text-base text-red-500">{error}</p>
+                    <p className="text-red-500">{error}</p>
                     <Button variant="outline" size="sm" onClick={fetchIdeas} className="mt-2">
                       Try Again
                     </Button>
@@ -205,12 +205,12 @@ export default function CommunityPage() {
                   />
                 ))
               ) : (
-                <div className="col-span-full flex items-center justify-center py-12">
-                  <div className="flex flex-col items-center gap-3 text-center px-4">
+                <div className="col-span-full flex items-center justify-center py-8">
+                  <div className="flex flex-col items-center gap-3 text-center">
                     <div className="rounded-full bg-muted p-3">
                       <Lightbulb className="h-6 w-6 text-muted-foreground" />
                     </div>
-                    <p className="text-sm sm:text-base text-muted-foreground">No ideas found. Be the first to share an idea!</p>
+                    <p className="text-muted-foreground">No ideas found. Be the first to share an idea!</p>
                     <Button size="sm" onClick={() => setIsAddIdeaOpen(true)} className="mt-2">
                       Share Idea
                     </Button>
@@ -220,7 +220,7 @@ export default function CommunityPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="resources" className="space-y-4 sm:space-y-6 focus-visible:outline-none focus-visible:ring-0">
+          <TabsContent value="resources" className="space-y-6">
             <ResourceList />
           </TabsContent>
         </Tabs>

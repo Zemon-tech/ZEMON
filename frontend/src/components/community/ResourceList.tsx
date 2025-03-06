@@ -189,53 +189,53 @@ export default function ResourceList() {
               <Card className="group hover:border-primary/50 transition-colors">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
-                    <div className="p-2 rounded-md bg-primary/10">
+                    <div className="shrink-0 p-2 rounded-md bg-primary/10">
                       <Icon className="w-5 h-5 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <h3 className="font-semibold group-hover:text-primary transition-colors">
+                        <div className="min-w-0">
+                          <h3 className="font-semibold group-hover:text-primary transition-colors truncate">
                             {resource.title}
                           </h3>
-                          <p className="text-sm text-muted-foreground mt-1">
+                          <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
                             {resource.description}
                           </p>
                         </div>
+                        <div className="flex gap-2 shrink-0">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="shrink-0"
+                            onClick={() => window.open(resource.url, '_blank')}
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </Button>
+                          {/* Only show delete button if current user is the creator or an admin */}
+                          {resource.addedBy && (currentUserId === resource.addedBy._id || isAdmin) && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleDeleteClick(resource)}
+                              disabled={isDeleting}
+                              className="shrink-0"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-4 mt-4">
-                        <Badge variant="secondary">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-4">
+                        <Badge variant="secondary" className="shrink-0">
                           {resource.resourceType}
                         </Badge>
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-xs sm:text-sm text-muted-foreground truncate">
                           Added by {resource.addedBy?.name || 'Anonymous'}
                         </span>
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-xs sm:text-sm text-muted-foreground shrink-0">
                           {new Date(resource.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="shrink-0"
-                        onClick={() => window.open(resource.url, '_blank')}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </Button>
-                      {/* Only show delete button if current user is the creator or an admin */}
-                      {resource.addedBy && (currentUserId === resource.addedBy._id || isAdmin) && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDeleteClick(resource)}
-                          disabled={isDeleting}
-                          className="shrink-0"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      )}
                     </div>
                   </div>
                 </CardContent>
