@@ -1,6 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { Dropdown } from "@/components/ui/dropdown";
 
 interface SearchAndFilterProps {
   placeholder?: string;
@@ -37,32 +38,29 @@ export default function SearchAndFilter({
   extraActions
 }: SearchAndFilterProps) {
   return (
-    <div className="flex items-center gap-4 flex-wrap">
-      <div className="relative flex-1 min-w-[200px]">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+      <div className="relative flex-1 w-full min-w-0">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <input
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full pl-10 pr-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary"
+          className="w-full pl-10 pr-4 py-2.5 rounded-xl border bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
         />
       </div>
-      <div>
-        <select
+      <div className="w-full sm:w-[200px]">
+        <Dropdown
           value={filter}
-          onChange={(e) => onFilterChange(e.target.value)}
-          className="min-w-[160px] px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary"
-        >
-          {filterOptions?.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          onChange={onFilterChange}
+          options={filterOptions}
+          className="w-full"
+        />
       </div>
       {extraActions && (
-        <div className="ml-auto">{extraActions}</div>
+        <div className="w-full sm:w-auto sm:ml-auto flex flex-wrap gap-2">
+          {extraActions}
+        </div>
       )}
     </div>
   );

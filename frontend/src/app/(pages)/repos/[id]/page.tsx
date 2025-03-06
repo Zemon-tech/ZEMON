@@ -192,81 +192,83 @@ export default function RepoDetailPage() {
   }
 
   return (
-    <PageContainer className="py-8">
+    <PageContainer className="py-4 sm:py-8">
       {/* Header Section */}
-      <div className="flex flex-col gap-6 mb-8">
+      <div className="flex flex-col gap-4 sm:gap-6 mb-6 sm:mb-8">
         <Link
           href="/repos"
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground"
+          className="inline-flex items-center gap-1.5 sm:gap-2 text-sm text-muted-foreground hover:text-foreground"
         >
-          <ArrowLeft size={20} />
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           Back to Repositories
         </Link>
 
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-xl bg-primary/10 flex items-center justify-center relative">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div className="flex items-start gap-3 sm:gap-4">
+            <div className="h-12 w-12 sm:h-16 sm:w-16 rounded-xl bg-primary/10 flex items-center justify-center relative">
               <Image
                 src={repo.avatar || "/Z.jpg"}
                 alt={repo.name}
-                className="h-12 w-12"
+                className="h-8 w-8 sm:h-12 sm:w-12"
                 width={48}
                 height={48}
               />
             </div>
             <div>
-              <h1 className="text-3xl font-bold">{repo.name}</h1>
-              <p className="text-muted-foreground">{repo.description}</p>
+              <h1 className="text-xl sm:text-3xl font-bold">{repo.name}</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">{repo.description}</p>
             </div>
           </div>
           
-          <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" asChild>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Button variant="outline" size="sm" asChild className="text-xs sm:text-sm">
               <a href={repo.github_url} target="_blank" rel="noopener noreferrer">
-                <Github className="w-4 h-4 mr-2" />
+                <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
                 View on GitHub
               </a>
             </Button>
-            <Button size="sm">
-              <Star className="w-4 h-4 mr-2" />
+            <Button size="sm" className="text-xs sm:text-sm">
+              <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
               Star
             </Button>
           </div>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           <StatCard
             title="Stars"
             value={repo.stars}
-            icon={<Star className="w-4 h-4 text-yellow-500" />}
+            icon={<Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-500" />}
           />
           <StatCard
             title="Forks"
             value={repo.forks}
-            icon={<GitFork className="w-4 h-4" />}
+            icon={<GitFork className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
           />
           <StatCard
             title="Open Issues"
             value={repo.openIssues}
-            icon={<AlertCircle className="w-4 h-4" />}
+            icon={<AlertCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
           />
           <StatCard
             title="Pull Requests"
             value={repo.pullRequests}
-            icon={<GitPullRequest className="w-4 h-4" />}
+            icon={<GitPullRequest className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
           />
         </div>
       </div>
 
       {/* Main Content */}
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="activity">Activity</TabsTrigger>
-          <TabsTrigger value="contributors">Contributors</TabsTrigger>
-          <TabsTrigger value="dependencies">Dependencies</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <TabsList className="w-full sm:w-auto inline-flex">
+            <TabsTrigger value="overview" className="text-sm">Overview</TabsTrigger>
+            <TabsTrigger value="activity" className="text-sm">Activity</TabsTrigger>
+            <TabsTrigger value="contributors" className="text-sm">Contributors</TabsTrigger>
+            <TabsTrigger value="dependencies" className="text-sm">Dependencies</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="overview" className="space-y-4">
           <OverviewTab
@@ -314,11 +316,11 @@ function StatCard({ title, value, icon }: StatCardProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <CardTitle className="text-xs sm:text-sm font-medium">{title}</CardTitle>
         {icon}
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
+        <div className="text-lg sm:text-2xl font-bold">{value}</div>
       </CardContent>
     </Card>
   );
