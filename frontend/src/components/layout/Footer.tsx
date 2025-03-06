@@ -5,15 +5,15 @@ const Footer = () => {
   return (
     <footer className="bg-background border-t">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-4">
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-4 md:gap-8">
+          <div className="col-span-3 md:col-span-1 space-y-4">
             <h3 className="text-lg font-semibold">Zemon</h3>
             <p className="text-sm text-muted-foreground">
               Building the future of open source communities, one project at a time.
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 md:col-span-1">
             <h4 className="text-sm font-semibold">Quick Links</h4>
             <ul className="space-y-2">
               <li>
@@ -39,7 +39,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 md:col-span-1">
             <h4 className="text-sm font-semibold">Community</h4>
             <ul className="space-y-2">
               <li>
@@ -65,7 +65,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 md:col-span-1">
             <h4 className="text-sm font-semibold">Connect With Us</h4>
             <div className="flex space-x-4">
               <a

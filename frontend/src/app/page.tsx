@@ -69,10 +69,10 @@ export default function HomePage() {
   ];
 
   const stats = [
-    { number: "50K+", label: "Elite Developers" },
-    { number: "10K+", label: "Successful Projects" },
-    { number: "2M+", label: "Monthly Visitors" },
-    { number: "150+", label: "Partner Companies" },
+    { number: "1K+", label: "Elite Developers" },
+    { number: "1K+", label: "Successful Projects" },
+    { number: "10K+", label: "Monthly Visitors" },
+    { number: "50+", label: "Partner Companies" },
   ];
 
   const testimonials = [
@@ -237,16 +237,11 @@ export default function HomePage() {
       {showProfileAlert && user && (
         <div className="w-full bg-gradient-to-r from-primary/10 via-primary/5 to-background border-y">
           <div className="container mx-auto py-2">
-            <div className="flex items-center justify-between px-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 gap-3">
               <div className="flex items-center gap-3">
                 <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                 <p className="text-sm text-muted-foreground">
-                  Complete your profile to unlock all features:-
-                  {!user.education?.university && " ( University ) "}
-                  {!user.education?.graduationYear && " ( Graduation Year ) "}
-                  {!user.linkedin && " ( LinkedIn ) "}
-                  {!user.personalWebsite && " ( Portfolio Website ) "}
-                  {!user.displayName && " ( Display Name ) "}
+                  Complete your profile to unlock all features
                 </p>
               </div>
               <div className="flex items-center gap-3">
@@ -309,7 +304,7 @@ export default function HomePage() {
             className="text-center max-w-3xl mx-auto space-y-8"
           >
             <Badge className="px-4 py-2 rounded-full mb-4" variant="secondary">
-              🚀 Join 10,000+ developers
+              🚀 Join 1,000+ developers
             </Badge>
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-[#1e293b] px-4">
               Build Your Tech Legacy
