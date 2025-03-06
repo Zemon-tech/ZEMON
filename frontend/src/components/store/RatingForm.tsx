@@ -40,10 +40,20 @@ export default function RatingForm({ storeId, onReviewAdded, existingReview }: R
       return;
     }
 
-    if (comment && comment.length < 10) {
+    const trimmedComment = comment.trim();
+    if (!trimmedComment || trimmedComment.length < 10) {
       toast({
         title: "Error",
-        description: "If providing a comment, it must be at least 10 characters",
+        description: "Please provide a comment with at least 10 characters",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (trimmedComment.length > 500) {
+      toast({
+        title: "Error",
+        description: "Comment must not exceed 500 characters",
         variant: "destructive",
       });
       return;
@@ -69,8 +79,9 @@ export default function RatingForm({ storeId, onReviewAdded, existingReview }: R
           'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ 
-          rating,
-          ...(comment && { comment })
+          rating, 
+          comment: trimmedComment,
+          user_id: (JSON.parse(atob(token.split('.')[1]))).id // Extract user ID from JWT token
         }),
       });
 
@@ -160,13 +171,18 @@ export default function RatingForm({ storeId, onReviewAdded, existingReview }: R
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">Your Review (Optional)</label>
+        <label className="text-sm font-medium">Your Review</label>
         <Textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="Write your review here... (optional, but if provided must be at least 10 characters)"
+          placeholder="Write your review here... (10-500 characters)"
           className="min-h-[100px]"
+          required
+          maxLength={500}
         />
+        <p className="text-xs text-muted-foreground">
+          {comment.length}/500 characters
+        </p>
       </div>
 
       <div className="flex gap-3">

@@ -5,10 +5,10 @@ import {
   Github, Star, GitFork,
   ExternalLink, Eye, Linkedin,
   Share2, Edit, Globe,
+  Wrench,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import PageContainer from "@/components/layout/PageContainer";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -18,6 +18,7 @@ import GitHubStats from "@/components/dashboard/GitHubStats";
 import GitHubRepos from "@/components/dashboard/GitHubRepos";
 import { fetchGitHubProfile } from "@/lib/github";
 import Image from "next/image";
+import Link from "next/link";
 
 interface User {
   _id?: string;
@@ -328,23 +329,21 @@ export default function UserDashboardPage() {
             </div>
           </div>
           
-          {/* Tabs Skeleton */}
-          <div className="bg-card rounded-xl shadow-sm p-6 mb-8">
-            <div className="border-b pb-2 mb-6">
-              <div className="grid grid-cols-3 gap-2 h-10">
-                {[...Array(3)].map((_, i) => (
-                  <div key={i} className="h-10 bg-muted rounded animate-pulse" />
-                ))}
+          {/* Content Skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-card rounded-xl shadow-sm overflow-hidden border border-muted/40">
+                <div className="p-4">
+                  <div className="h-6 bg-muted rounded w-3/4 animate-pulse mb-3" />
+                  <div className="h-4 bg-muted rounded w-full animate-pulse mb-2" />
+                  <div className="h-4 bg-muted rounded w-2/3 animate-pulse mb-4" />
+                  <div className="flex gap-3">
+                    <div className="h-5 bg-muted rounded w-16 animate-pulse" />
+                    <div className="h-5 bg-muted rounded w-16 animate-pulse" />
+                  </div>
+                </div>
               </div>
-            </div>
-            
-            <div className="h-7 bg-muted rounded w-48 animate-pulse mb-6" />
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-muted rounded-xl h-48 animate-pulse" />
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </PageContainer>
@@ -502,107 +501,234 @@ export default function UserDashboardPage() {
             } : null} />
           </div>
         </div>
-        
-        {/* Tabs - Redesigned */}
-        <div className="mb-6 sm:mb-8">
-          <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-muted/40">
-            <Tabs defaultValue="overview" className="w-full">
-              <div className="bg-muted/5 border-b border-muted/40">
-                <TabsList className="w-full flex justify-start bg-transparent">
-                  <TabsTrigger 
-                    value="overview" 
-                    className="flex-1 data-[state=active]:bg-white dark:data-[state=active]:bg-background data-[state=active]:text-foreground px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Overview
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="activity" 
-                    className="flex-1 data-[state=active]:bg-white dark:data-[state=active]:bg-background data-[state=active]:text-foreground px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Activity
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="contributors" 
-                    className="flex-1 data-[state=active]:bg-white dark:data-[state=active]:bg-background data-[state=active]:text-foreground px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Contributors
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="dependencies" 
-                    className="flex-1 data-[state=active]:bg-white dark:data-[state=active]:bg-background data-[state=active]:text-foreground px-6 py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Dependencies
-                  </TabsTrigger>
-                </TabsList>
-              </div>
 
-              {/* Overview Tab Content */}
-              <TabsContent value="overview" className="focus-visible:outline-none focus-visible:ring-0">
-                <div className="p-4 sm:p-6">
-                  <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none">
-                    <div className="bg-muted/5 rounded-lg border border-muted/10 p-4 sm:p-6">
-                      <h2 className="text-xl sm:text-2xl font-bold mb-4">README.md</h2>
-                      <div className="space-y-4">
-                        <h1>SphereX - Open Source Community Platform</h1>
-                        <p className="text-muted-foreground">
-                          A modern platform for open source collaboration and community building.
-                        </p>
-                        {/* Add more README content as needed */}
-                      </div>
+        {/* Content Sections */}
+        <div className="space-y-6 sm:space-y-8">
+          {/* Projects and Tools Side by Side */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left Column - Published Projects */}
+            <div>
+              {publishedProjects.length > 0 ? (
+                <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-muted/40 h-full">
+                  <div className="p-4 sm:p-6">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-4 flex items-center gap-2">
+                      <Github className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                      Published Projects
+                    </h2>
+                    <div className="space-y-4">
+                      {publishedProjects.map((project) => (
+                        <Card key={project._id} className="hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+                          <CardContent className="p-4">
+                            <div className="space-y-4">
+                              {/* Header Section */}
+                              <div className="flex items-start justify-between gap-4">
+                                <div className="min-w-0 flex-1">
+                                  <Link
+                                    href={`/repos/${project._id}`}
+                                    className="text-lg font-semibold hover:text-primary transition-colors line-clamp-1 block"
+                                  >
+                                    {project.name}
+                                  </Link>
+                                </div>
+                                <div className="flex gap-1.5 flex-shrink-0">
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-8 w-8"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      window.open(project.githubUrl || project.github_url, '_blank');
+                                    }}
+                                    title="View on GitHub"
+                                  >
+                                    <Github className="w-4 h-4" />
+                                  </Button>
+                                  <Link href={`/repos/${project._id}`}>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="icon"
+                                      className="h-8 w-8"
+                                      title="View Repository Details"
+                                    >
+                                      <ExternalLink className="w-4 h-4" />
+                                    </Button>
+                                  </Link>
+                                </div>
+                              </div>
+
+                              {/* Description */}
+                              <p className="text-sm text-muted-foreground line-clamp-2 min-h-[2.5rem]">
+                                {project.description || "No description provided"}
+                              </p>
+
+                              {/* Stats & Info */}
+                              <div className="flex flex-wrap items-center gap-3 text-sm">
+                                <Badge 
+                                  variant="secondary" 
+                                  className="font-medium"
+                                >
+                                  {project.language}
+                                </Badge>
+                                
+                                <div className="flex items-center gap-1 text-muted-foreground" title="Stars">
+                                  <Star className="w-3.5 h-3.5" />
+                                  {project.stars.toLocaleString()}
+                                </div>
+                                
+                                <div className="flex items-center gap-1 text-muted-foreground" title="Forks">
+                                  <GitFork className="w-3.5 h-3.5" />
+                                  {project.forks.toLocaleString()}
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
                     </div>
                   </div>
                 </div>
-              </TabsContent>
-
-              {/* Activity Tab Content */}
-              <TabsContent value="activity" className="focus-visible:outline-none focus-visible:ring-0">
-                <div className="p-4 sm:p-6">
-                  <div className="text-center py-8 sm:py-12 bg-muted/5 rounded-lg border border-dashed border-muted/20">
-                    <h3 className="text-base sm:text-lg font-medium mb-2">Coming soon</h3>
-                    <p className="text-muted-foreground text-sm">Activity tracking will be available soon.</p>
+              ) : (
+                <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-muted/40 h-full">
+                  <div className="p-4 sm:p-6">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-4 flex items-center gap-2">
+                      <Github className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                      Published Projects
+                    </h2>
+                    <div className="text-center py-8 bg-muted/5 rounded-lg border border-dashed border-muted/20">
+                      <h3 className="text-base font-medium mb-2">No published projects</h3>
+                      <p className="text-sm text-muted-foreground">This user hasn't published any projects yet.</p>
+                    </div>
                   </div>
                 </div>
-              </TabsContent>
+              )}
+            </div>
 
-              {/* Contributors Tab Content */}
-              <TabsContent value="contributors" className="focus-visible:outline-none focus-visible:ring-0">
-                <div className="p-4 sm:p-6">
-                  <div className="text-center py-8 sm:py-12 bg-muted/5 rounded-lg border border-dashed border-muted/20">
-                    <h3 className="text-base sm:text-lg font-medium mb-2">No contributors yet</h3>
-                    <p className="text-muted-foreground text-sm">Be the first to contribute to this project.</p>
+            {/* Right Column - Published Tools */}
+            <div>
+              {userTools.length > 0 ? (
+                <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-muted/40 h-full">
+                  <div className="p-4 sm:p-6">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-4 flex items-center gap-2">
+                      <Wrench className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                      Published Tools
+                    </h2>
+                    <div className="space-y-4">
+                      {userTools.map((tool) => (
+                        <Link key={tool._id} href={`/store/${tool._id}`}>
+                          <Card className="group hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+                            <CardContent className="p-4">
+                              <div className="flex flex-col gap-2">
+                                <div className="flex items-start justify-between gap-4">
+                                  <div className="flex items-start gap-4">
+                                    {/* Logo */}
+                                    <div className="relative w-14 h-14">
+                                      <img
+                                        src={tool.thumbnail}
+                                        alt={tool.name}
+                                        className="w-full h-full rounded-[18px] object-cover shadow-sm group-hover:shadow-md transition-all duration-300"
+                                      />
+                                    </div>
+
+                                    {/* Content */}
+                                    <div>
+                                      <h3 className="text-lg font-semibold group-hover:text-primary transition-colors truncate">
+                                        {tool.name}
+                                      </h3>
+                                      <Badge variant="secondary" className="mt-1 text-xs">
+                                        {tool.category}
+                                      </Badge>
+                                    </div>
+                                  </div>
+
+                                  {/* Visit Button */}
+                                  <div className="flex gap-2">
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        window.open(tool.url, '_blank');
+                                      }}
+                                    >
+                                      <ExternalLink className="w-4 h-4" />
+                                    </Button>
+                                    {tool.github_url && (
+                                      <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          window.open(tool.github_url, '_blank');
+                                        }}
+                                      >
+                                        <Github className="w-4 h-4" />
+                                      </Button>
+                                    )}
+                                  </div>
+                                </div>
+
+                                {/* Description */}
+                                <p className="text-sm text-muted-foreground line-clamp-2">
+                                  {tool.description}
+                                </p>
+
+                                <div className="flex flex-wrap items-center gap-2 mt-2">
+                                  {tool.tags.map((tag, index) => (
+                                    <Badge key={index} variant="outline" className="text-xs">
+                                      {tag}
+                                    </Badge>
+                                  ))}
+                                  <div className="flex items-center gap-1 text-sm text-muted-foreground ml-auto">
+                                    <Eye className="w-4 h-4" />
+                                    {tool.views}
+                                  </div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </TabsContent>
-
-              {/* Dependencies Tab Content */}
-              <TabsContent value="dependencies" className="focus-visible:outline-none focus-visible:ring-0">
-                <div className="p-4 sm:p-6">
-                  <div className="text-center py-8 sm:py-12 bg-muted/5 rounded-lg border border-dashed border-muted/20">
-                    <h3 className="text-base sm:text-lg font-medium mb-2">Dependencies list</h3>
-                    <p className="text-muted-foreground text-sm">Project dependencies will be listed here.</p>
+              ) : (
+                <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-muted/40 h-full">
+                  <div className="p-4 sm:p-6">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-4 flex items-center gap-2">
+                      <Wrench className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                      Published Tools
+                    </h2>
+                    <div className="text-center py-8 bg-muted/5 rounded-lg border border-dashed border-muted/20">
+                      <h3 className="text-base font-medium mb-2">No published tools</h3>
+                      <p className="text-sm text-muted-foreground">This user hasn't published any tools yet.</p>
+                    </div>
                   </div>
                 </div>
-              </TabsContent>
-            </Tabs>
+              )}
+            </div>
           </div>
+
+          {/* GitHub Repositories */}
+          {githubRepos.length > 0 && (
+            <div className="bg-card rounded-xl shadow-sm overflow-hidden border border-muted/40">
+              <div className="p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 flex items-center gap-2">
+                  <Github className="w-5 h-5 sm:w-6 sm:h-6" />
+                  GitHub Repositories
+                </h2>
+                <GitHubRepos 
+                  repos={githubRepos} 
+                  username={user?.github || user?.github_username || ''} 
+                  limit={6}
+                  showViewAll={true}
+                />
+              </div>
+            </div>
+          )}
         </div>
-        
-        {/* GitHub Repositories - Moved to appear after the Tabs component */}
-        {githubRepos.length > 0 && (
-          <div className="bg-card rounded-xl shadow-sm p-4 sm:p-6 mb-6 sm:mb-8 border border-muted/40">
-            <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-2 mb-4 sm:mb-6">
-              <Github className="w-5 h-5 sm:w-6 sm:h-6" />
-              GitHub Repositories
-            </h2>
-            
-            <GitHubRepos 
-              repos={githubRepos} 
-              username={user?.github || user?.github_username || ''} 
-              limit={6}
-              showViewAll={true}
-            />
-          </div>
-        )}
       </div>
     </PageContainer>
   );

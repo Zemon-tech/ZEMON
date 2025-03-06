@@ -121,6 +121,7 @@ export const addReview = async (req: Request, res: Response, next: NextFunction)
     } else {
       // Add new review
       item.reviews.push({
+        user_id: req.body.user_id,
         user_name: user.name,
         rating,
         comment: comment || 'No comment provided',
