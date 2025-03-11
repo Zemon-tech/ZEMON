@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Github, Twitter, Linkedin } from "lucide-react";
+import { Github, Twitter, Linkedin, Download } from "lucide-react";
+import { InstallPWA } from "./InstallPWA";
 
 const Footer = () => {
   return (
@@ -11,6 +12,13 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground">
               Building the future of open source communities, one project at a time.
             </p>
+            <div className="flex items-center gap-3">
+              <InstallPWA />
+              <Link href="/download" className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1">
+                <Download className="w-4 h-4" />
+                How to Install
+              </Link>
+            </div>
           </div>
 
           <div className="space-y-4 md:col-span-1">
