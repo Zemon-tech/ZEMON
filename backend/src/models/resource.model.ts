@@ -45,11 +45,6 @@ const ResourceSchema = new Schema({
     required: [true, 'Author is required'],
     index: true
   },
-  type: {
-    type: String,
-    required: true,
-    enum: ['article', 'video', 'course', 'book', 'documentation', 'other']
-  },
   tags: [{
     type: String,
     trim: true

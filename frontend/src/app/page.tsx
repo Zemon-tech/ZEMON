@@ -79,19 +79,19 @@ export default function HomePage() {
     {
       name: "Shivang Kandoi",
       role: "Student Developer",
-      avatar: "https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png",
+      avatar: "https://ui-avatars.com/api/?name=Shivang+Kandoi&background=random&size=128",
       content: "Zemon has transformed how I collaborate on open source projects. The community is incredibly supportive!",
     },
     {
       name: "Madhav Varshney",
       role: "Student Developer",
-      avatar: "https://marketplace.canva.com/EAFewoMXU-4/1/0/1600w/canva-purple-pink-gradient-man-3d-avatar-0o0qE2T_kr8.jpg",
+      avatar: "https://ui-avatars.com/api/?name=Madhav+Varshney&background=random&size=128",
       content: "The quality of projects and tools I've discovered here is outstanding. A must-have for any serious developer.",
     },
     {
       name: "Satyajit Jena",
       role: "Student Developer",
-      avatar: "https://imgsrv2.voi.id/WjEqMKzrXoQQvMyNmpfJrb69U5WO2jgd1eqrHg-lOyA/auto/1200/675/sm/1/bG9jYWw6Ly8vcHVibGlzaGVycy8zNDMxMTEvMjAyMzEyMjkxMzI1LW1haW4uY3JvcHBlZF8xNzAzODM0OTI5LmpwZWc.jpg",
+      avatar: "https://ui-avatars.com/api/?name=Satyajit+Jena&background=random&size=128",
       content: "The developer community here is amazing. I've learned so much from collaborating with others.",
     },
   ];
