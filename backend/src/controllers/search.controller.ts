@@ -9,6 +9,9 @@ import Event from '../models/event.model';
 import User from '../models/user.model';
 import { AppError } from '../utils/errors';
 import logger from '../utils/logger';
+import { getCache, setCache, clearCache } from '../utils/cache';
+
+const CACHE_EXPIRATION = 3600; // 1 hour
 
 export const search = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -20,6 +23,18 @@ export const search = async (req: Request, res: Response, next: NextFunction) =>
     logger.info(`Searching for: ${query}`);
 
     const trimmedQuery = query.trim();
+    // Generate cache key based on the search query
+    const cacheKey = `search:${trimmedQuery.toLowerCase()}`;
+    
+    // Try to get cached results
+    const cachedResults = await getCache(cacheKey);
+    if (cachedResults) {
+      return res.json({
+        success: true,
+        results: cachedResults
+      });
+    }
+
     // Create regex patterns for prefix match and contains match
     const prefixRegex = new RegExp(`^${trimmedQuery}`, 'i');
     const containsRegex = new RegExp(trimmedQuery, 'i');
@@ -161,9 +176,14 @@ export const search = async (req: Request, res: Response, next: NextFunction) =>
       return 0;
     });
 
+    const finalResults = sortedResults.slice(0, 10); // Limit total results to 10
+
+    // Cache the results
+    await setCache(cacheKey, finalResults, CACHE_EXPIRATION);
+
     res.json({
       success: true,
-      results: sortedResults.slice(0, 10) // Limit total results to 10
+      results: finalResults
     });
   } catch (error) {
     logger.error('Error in search:', error);

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import StoreItem from '../models/store.model';
 import { AppError } from '../utils/errors';
 import logger from '../utils/logger';
+import { getCache, setCache, clearCache } from '../utils/cache';
 
 const CACHE_EXPIRATION = 3600; // 1 hour
 
@@ -11,6 +12,13 @@ export const getAllStoreItems = async (req: Request, res: Response, next: NextFu
     const limit = parseInt(req.query.limit as string) || 12;
     const category = req.query.category as string;
     const status = req.query.status || 'approved';
+
+    const cacheKey = `store:items:${page}:${limit}:${category}:${status}`;
+    const cachedData = await getCache(cacheKey);
+    
+    if (cachedData) {
+      return res.json({ success: true, data: cachedData });
+    }
 
     // Build query
     const query: any = { status };
@@ -38,6 +46,7 @@ export const getAllStoreItems = async (req: Request, res: Response, next: NextFu
       },
     };
 
+    await setCache(cacheKey, data, CACHE_EXPIRATION);
     return res.json({ success: true, data });
   } catch (error) {
     logger.error('Error in getAllStoreItems:', error);
@@ -49,7 +58,12 @@ export const getStoreItemDetails = async (req: Request, res: Response, next: Nex
   try {
     const { id } = req.params;
     
-    // Cache check removed - always fetch from database
+    const cacheKey = `store:item:${id}`;
+    const cachedData = await getCache(cacheKey);
+    
+    if (cachedData) {
+      return res.json({ success: true, data: cachedData });
+    }
     
     const item = await StoreItem.findById(id)
       .populate('author', 'name')
@@ -62,7 +76,7 @@ export const getStoreItemDetails = async (req: Request, res: Response, next: Nex
     // Increment views
     await StoreItem.findByIdAndUpdate(id, { $inc: { views: 1 } });
 
-    // Cache set operation removed
+    await setCache(cacheKey, item, CACHE_EXPIRATION);
     res.json({ success: true, data: item });
   } catch (error) {
     logger.error('Error in getStoreItemDetails:', error);
@@ -80,7 +94,8 @@ export const addStoreItem = async (req: Request, res: Response, next: NextFuncti
     // Populate the author field
     const populatedItem = await newItem.populate('author', 'name');
 
-    // Cache clear operation removed
+    // Clear store items cache
+    await clearCache('store:items:*');
 
     res.status(201).json({ success: true, data: populatedItem });
   } catch (error) {
@@ -93,7 +108,7 @@ export const addReview = async (req: Request, res: Response, next: NextFunction)
   try {
     const { id } = req.params;
     const { rating, comment } = req.body;
-    const user = (req as any).user; // Get authenticated user
+    const user = (req as any).user;
 
     if (!user) {
       throw new AppError('Authentication required', 401);
@@ -131,7 +146,8 @@ export const addReview = async (req: Request, res: Response, next: NextFunction)
 
     await item.save();
 
-    // Cache clear operation removed
+    // Clear item cache
+    await clearCache(`store:item:${id}`);
 
     res.json({ success: true, data: item });
   } catch (error) {
@@ -151,7 +167,9 @@ export const deleteStoreItem = async (req: Request, res: Response, next: NextFun
 
     await StoreItem.deleteOne({ _id: id });
 
-    // Cache clear operations removed
+    // Clear store caches
+    await clearCache(`store:item:${id}`);
+    await clearCache('store:items:*');
 
     res.json({ success: true, message: 'Store item deleted successfully' });
   } catch (error) {
@@ -169,14 +187,27 @@ export const getUserTools = async (req: Request, res: Response, next: NextFuncti
       throw new AppError('User must be authenticated', 401);
     }
 
+    const cacheKey = `store:user:tools:${userId}`;
+    const cachedData = await getCache(cacheKey);
+    
+    if (cachedData) {
+      return res.json({
+        success: true,
+        data: {
+          tools: cachedData
+        }
+      });
+    }
+
     const tools = await StoreItem.find({ author: userId })
       .sort({ createdAt: -1 })
-      .populate('author', 'name')  // Populate author details
+      .populate('author', 'name')
       .lean();
 
     console.log('Found tools:', tools.length);
 
-    // Always return an array, even if empty
+    await setCache(cacheKey, tools, CACHE_EXPIRATION);
+
     res.json({
       success: true,
       data: {

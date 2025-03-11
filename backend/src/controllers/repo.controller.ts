@@ -4,6 +4,7 @@ import Repo from '../models/repo.model';
 import { AppError } from '../utils/errors';
 import { fetchGitHubRepo, validateGitHubUrl } from '../utils/github';
 import logger from '../utils/logger';
+import { getCache, setCache, clearCache } from '../utils/cache';
 
 const CACHE_EXPIRATION = 3600; // 1 hour
 
@@ -13,11 +14,10 @@ export const getRepos = async (req: Request, res: Response, next: NextFunction) 
     const limit = parseInt(req.query.limit as string) || 10;
     const cacheKey = `repos:all:${page}:${limit}`;
 
-    // Try to get from cache first
-    // const cachedData = await getCache(cacheKey);
-    // if (cachedData) {
-    //   return res.json({ success: true, data: cachedData });
-    // }
+    const cachedData = await getCache(cacheKey);
+    if (cachedData) {
+      return res.json({ success: true, data: cachedData });
+    }
 
     const skip = (page - 1) * limit;
     const repos = await Repo.find()
@@ -48,8 +48,7 @@ export const getRepos = async (req: Request, res: Response, next: NextFunction) 
       },
     };
 
-    // Set cache
-    // await setCache(cacheKey, data, CACHE_EXPIRATION);
+    await setCache(cacheKey, data, CACHE_EXPIRATION);
     res.json({ success: true, data });
   } catch (error) {
     logger.error('Error in getRepos:', error);
@@ -65,10 +64,10 @@ export const getRepoDetails = async (req: Request, res: Response, next: NextFunc
     }
 
     const cacheKey = `repos:${id}`;
-    // const cachedData = await getCache(cacheKey);
-    // if (cachedData) {
-    //   return res.json({ success: true, data: cachedData });
-    // }
+    const cachedData = await getCache(cacheKey);
+    if (cachedData) {
+      return res.json({ success: true, data: cachedData });
+    }
 
     const repo = await Repo.findById(id).lean();
 
@@ -76,7 +75,7 @@ export const getRepoDetails = async (req: Request, res: Response, next: NextFunc
       throw new AppError('Repository not found', 404);
     }
 
-    // await setCache(cacheKey, repo, CACHE_EXPIRATION);
+    await setCache(cacheKey, repo, CACHE_EXPIRATION);
     res.json({ success: true, data: repo });
   } catch (error) {
     next(error);
@@ -120,7 +119,7 @@ export const addRepo = async (req: Request, res: Response, next: NextFunction) =
     const repo = new Repo({
       ...githubData,
       description: description || githubData.description,
-      programming_language: repoLanguage, // Store as programming_language instead of language
+      programming_language: repoLanguage,
       tags: tags || [],
       added_by: userId,
     });
@@ -128,7 +127,7 @@ export const addRepo = async (req: Request, res: Response, next: NextFunction) =
     await repo.save();
     const populatedRepo = await repo.populate('added_by', 'name');
     
-    // await clearCache('repos:*');
+    await clearCache('repos:*');
     res.status(201).json({ success: true, data: populatedRepo });
   } catch (error) {
     next(error);
@@ -163,8 +162,8 @@ export const updateRepo = async (req: Request, res: Response, next: NextFunction
       { new: true }
     );
 
-    // await clearCache(`repos:${id}`);
-    // await clearCache('repos:all:*');
+    await clearCache(`repos:${id}`);
+    await clearCache('repos:all:*');
     res.json({ success: true, data: updatedRepo });
   } catch (error) {
     next(error);
@@ -184,8 +183,8 @@ export const deleteRepo = async (req: Request, res: Response, next: NextFunction
     }
 
     await Repo.findByIdAndDelete(id);
-    // await clearCache(`repos:${id}`);
-    // await clearCache('repos:all:*');
+    await clearCache(`repos:${id}`);
+    await clearCache('repos:all:*');
     res.json({ success: true, message: 'Repository deleted successfully' });
   } catch (error) {
     next(error);
@@ -195,7 +194,6 @@ export const deleteRepo = async (req: Request, res: Response, next: NextFunction
 export const likeRepo = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    // Get user ID from authenticated request
     const userId = (req as any).user?.id;
 
     if (!userId) {
@@ -219,7 +217,7 @@ export const likeRepo = async (req: Request, res: Response, next: NextFunction) 
     }
 
     await repo.save();
-    // await clearCache(`repos:${id}`);
+    await clearCache(`repos:${id}`);
     res.json({ success: true, data: repo });
   } catch (error) {
     next(error);
@@ -230,7 +228,6 @@ export const addComment = async (req: Request, res: Response, next: NextFunction
   try {
     const { id } = req.params;
     const { content } = req.body;
-    // Get user ID from authenticated request
     const userId = (req as any).user?.id;
 
     if (!userId) {
@@ -257,7 +254,7 @@ export const addComment = async (req: Request, res: Response, next: NextFunction
     });
 
     await repo.save();
-    // await clearCache(`repos:${id}`);
+    await clearCache(`repos:${id}`);
 
     const updatedRepo = await Repo.findById(id).lean();
     res.json({ success: true, data: updatedRepo });
@@ -273,15 +270,24 @@ export const getUserRepos = async (req: Request, res: Response, next: NextFuncti
       throw new AppError('User must be authenticated', 401);
     }
 
-    console.log('Fetching repos for user:', userId);
+    const cacheKey = `repos:user:${userId}`;
+    const cachedData = await getCache(cacheKey);
+    if (cachedData) {
+      return res.json({
+        success: true,
+        data: {
+          repos: cachedData
+        }
+      });
+    }
+
     const repos = await Repo.find({ added_by: userId })
       .populate('added_by', 'name')
       .sort({ createdAt: -1 })
       .lean();
 
-    console.log('Found repos:', repos.length);
+    await setCache(cacheKey, repos, CACHE_EXPIRATION);
 
-    // Always return an array, even if empty
     res.json({
       success: true,
       data: {
