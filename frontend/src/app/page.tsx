@@ -77,21 +77,21 @@ export default function HomePage() {
 
   const testimonials = [
     {
-      name: "Sarah Chen",
-      role: "Senior Developer",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+      name: "Shivang Kandoi",
+      role: "Student Developer",
+      avatar: "https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png",
       content: "Zemon has transformed how I collaborate on open source projects. The community is incredibly supportive!",
     },
     {
-      name: "Alex Kumar",
-      role: "Tech Lead",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
+      name: "Madhav Varshney",
+      role: "Student Developer",
+      avatar: "https://marketplace.canva.com/EAFewoMXU-4/1/0/1600w/canva-purple-pink-gradient-man-3d-avatar-0o0qE2T_kr8.jpg",
       content: "The quality of projects and tools I've discovered here is outstanding. A must-have for any serious developer.",
     },
     {
-      name: "Maria Rodriguez",
-      role: "Full Stack Developer",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=maria",
+      name: "Satyajit Jena",
+      role: "Student Developer",
+      avatar: "https://imgsrv2.voi.id/WjEqMKzrXoQQvMyNmpfJrb69U5WO2jgd1eqrHg-lOyA/auto/1200/675/sm/1/bG9jYWw6Ly8vcHVibGlzaGVycy8zNDMxMTEvMjAyMzEyMjkxMzI1LW1haW4uY3JvcHBlZF8xNzAzODM0OTI5LmpwZWc.jpg",
       content: "The developer community here is amazing. I've learned so much from collaborating with others.",
     },
   ];
