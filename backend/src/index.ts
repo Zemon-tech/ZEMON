@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { config } from './config/config';
 import { connectDB } from './utils/database';
+import { startKeepAlive } from './utils/keep-alive';
 import routes from './routes';
 import errorHandler from './middleware/error.middleware';
 
@@ -21,6 +22,11 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('dev'));
 
+// Health check endpoints
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+});
+
 // Routes
 app.get('/api/test', (req, res) => {
   res.json({ message: 'API is working!' });
@@ -36,6 +42,11 @@ const start = async () => {
     await connectDB();
     app.listen(config.port, () => {
       console.log(`Server running on port ${config.port}`);
+      
+      // Start keep-alive service in production
+      if (config.env === 'production') {
+        startKeepAlive();
+      }
     });
   } catch (error) {
     console.error('Error starting server:', error);
