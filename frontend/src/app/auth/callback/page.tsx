@@ -6,6 +6,17 @@ import { supabase } from '@/lib/supabase';
 import { API_BASE_URL } from '@/lib/api';
 import { Loader2 } from "lucide-react";
 
+// Define the user data interface
+interface UserData {
+  name: string;
+  email: string | undefined;
+  avatar: string;
+  role: string;
+  _id: string;
+  github_username?: string;
+  github?: string;
+}
+
 function CallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -25,32 +36,46 @@ function CallbackContent() {
           throw new Error('No session');
         }
 
-        // Get user data from GitHub session
+        // Get user data from session
         const { user } = session;
+        const provider = user.app_metadata.provider;
         
         // Log the user metadata for debugging
-        console.log('GitHub user metadata:', user.user_metadata);
+        console.log(`${provider} user metadata:`, user.user_metadata);
         
-        const githubData = {
+        let userData: UserData = {
           name: user.user_metadata.full_name || user.user_metadata.name || user.user_metadata.user_name,
           email: user.email,
           avatar: user.user_metadata.avatar_url,
-          github_username: user.user_metadata.user_name,
-          github: user.user_metadata.user_name,
           role: 'user',
           _id: user.id,
         };
 
-        // Log the data being sent to the backend
-        console.log('Data being sent to backend:', githubData);
+        // Add provider-specific data
+        if (provider === 'github') {
+          userData = {
+            ...userData,
+            github_username: user.user_metadata.user_name,
+            github: user.user_metadata.user_name,
+          };
+        } else if (provider === 'google') {
+          // For Google users, we'll still create the account but they'll need to link GitHub later
+          userData = {
+            ...userData,
+            // Keep the email which will be used later for GitHub linking
+          };
+        }
 
-        // Sync with MongoDB
+        // Log the data being sent to the backend
+        console.log('Data being sent to backend:', userData);
+
+        // Sync with MongoDB using the same endpoint
         const response = await fetch(`${API_BASE_URL}/api/auth/github/sync`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(githubData),
+          body: JSON.stringify(userData),
         });
 
         const data = await response.json();
@@ -69,8 +94,14 @@ function CallbackContent() {
         });
         window.dispatchEvent(event);
 
-        // Redirect to dashboard
-        router.push('/dashboard');
+        // Check if this is a new user
+        if (data.data.isNewUser) {
+          // Redirect all new users to settings page to complete their profile
+          router.push('/settings');
+        } else {
+          // For existing users, go to dashboard
+          router.push('/dashboard');
+        }
       } catch (error) {
         console.error('Error in auth callback:', error);
         router.push('/login?error=auth');

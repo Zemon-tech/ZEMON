@@ -20,10 +20,25 @@ export const signInWithGitHub = async () => {
   return data;
 };
 
+export const signInWithGoogle = async () => {
+  // Get the current environment's URL
+  const redirectUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+  
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${redirectUrl}/auth/callback`
+    }
+  });
+
+  if (error) throw error;
+  return data;
+};
+
 export const handleAuthStateChange = (callback: (session: any) => void) => {
   return supabase.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN') {
       callback(session);
     }
   });
-}; 
+};
